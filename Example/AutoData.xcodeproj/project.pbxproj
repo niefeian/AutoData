@@ -30,9 +30,9 @@
 /* Begin PBXFileReference section */
 		0E908BB3D262E51F5F06A5E1 /* Pods-AutoData_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoData_Example.debug.xcconfig"; path = "Target Support Files/Pods-AutoData_Example/Pods-AutoData_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		1F326BA50BC0D8636FF724F0 /* Pods-AutoData_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoData_Tests.release.xcconfig"; path = "Target Support Files/Pods-AutoData_Tests/Pods-AutoData_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		2AD4FAF0B71B9E69F538E92F /* AutoData.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = AutoData.podspec; path = ../AutoData.podspec; sourceTree = "<group>"; };
+		2AD4FAF0B71B9E69F538E92F /* AutoData.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = AutoData.podspec; path = ../AutoData.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		3CCE7259E3FF0B57DC1D0F1B /* Pods-AutoData_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoData_Tests.debug.xcconfig"; path = "Target Support Files/Pods-AutoData_Tests/Pods-AutoData_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		43989C8FAC2CC459B2EB1826 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		43989C8FAC2CC459B2EB1826 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* AutoData_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutoData_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACD51AFB9204008FA782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -44,7 +44,7 @@
 		607FACEA1AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		6D356337A6D2D01FB819FE73 /* Pods_AutoData_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AutoData_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		77D6CA5E1F887E3E354B5A6B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		77D6CA5E1F887E3E354B5A6B /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		D053585CE6DD43BAF005F3E0 /* Pods-AutoData_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AutoData_Example.release.xcconfig"; path = "Target Support Files/Pods-AutoData_Example/Pods-AutoData_Example.release.xcconfig"; sourceTree = "<group>"; };
 		E761F7275AC1477E30850C1E /* Pods_AutoData_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AutoData_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -147,7 +147,6 @@
 				3CCE7259E3FF0B57DC1D0F1B /* Pods-AutoData_Tests.debug.xcconfig */,
 				1F326BA50BC0D8636FF724F0 /* Pods-AutoData_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -228,6 +227,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -292,6 +292,10 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AutoData_Tests/Pods-AutoData_Tests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AutoModel/AutoModel.framework",
+				"${BUILT_PRODUCTS_DIR}/NFANetwork/NFANetwork.framework",
+				"${BUILT_PRODUCTS_DIR}/NFASQLiteDB/NFASQLiteDB.framework",
+				"${BUILT_PRODUCTS_DIR}/NFAToolkit/NFAToolkit.framework",
 				"${BUILT_PRODUCTS_DIR}/FBSnapshotTestCase/FBSnapshotTestCase.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble/Nimble.framework",
 				"${BUILT_PRODUCTS_DIR}/Nimble-Snapshots/Nimble_Snapshots.framework",
@@ -299,6 +303,10 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutoModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFANetwork.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFASQLiteDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFAToolkit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FBSnapshotTestCase.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Nimble_Snapshots.framework",
@@ -317,10 +325,18 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-AutoData_Example/Pods-AutoData_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AutoData/AutoData.framework",
+				"${BUILT_PRODUCTS_DIR}/AutoModel/AutoModel.framework",
+				"${BUILT_PRODUCTS_DIR}/NFANetwork/NFANetwork.framework",
+				"${BUILT_PRODUCTS_DIR}/NFASQLiteDB/NFASQLiteDB.framework",
+				"${BUILT_PRODUCTS_DIR}/NFAToolkit/NFAToolkit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutoData.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AutoModel.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFANetwork.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFASQLiteDB.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NFAToolkit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -504,6 +520,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AutoData/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
@@ -519,6 +536,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = AutoData/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.$(PRODUCT_NAME:rfc1034identifier)";
