@@ -65,7 +65,7 @@ public class HttpUtil {
                     parameters[key] = value
                 }
             }
-            
+            parameters["command"] = baseurl
             var json : String!
             do {
                 let data = try JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
@@ -78,6 +78,7 @@ public class HttpUtil {
         }
         
         if  let nsurl = URL(string: fullUrl){
+            print(nsurl)
             let request : RequestUtil = RequestUtil(url: nsurl)
             request.method = (method == nil ? Api.GET : method!)
             request.loadWithCompletion { response, json, error in
@@ -94,7 +95,9 @@ public class HttpUtil {
                     do {
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                         if insteadOss {
-                            callback(jsonData)
+                            DispatchQueue.main.async(execute: {
+                                callback(jsonData)
+                            })
                         } else {
                             if let success =  jsonData["flag"] as? String , success == "1" {
                                 if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
