@@ -46,15 +46,16 @@ public class HttpUtil {
  
     
     private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false, insteadOss : Bool = false, closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
-       if !ReachabilityNotificationView.getIsReachable(){
+        
+        if !ReachabilityNotificationView.getIsReachable(){
             return
         }
         
         var fullUrl = ""
+        var parameters: Dictionary<String, String> = Dictionary()
         if noAutoParams || baseurl.hasPrefix("http"){
             fullUrl = baseurl
         }else{
-            var parameters: Dictionary<String, String> = Dictionary()
             if params != nil {
                 for (key, value) in params! {
                     parameters[key] = value
@@ -66,21 +67,12 @@ public class HttpUtil {
                 }
             }
             parameters["command"] = baseurl
-            var json : String!
-            do {
-                let data = try JSONSerialization.data(withJSONObject: parameters, options: JSONSerialization.WritingOptions.prettyPrinted)
-                let strJson = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-                json = strJson as String?
-            }catch let e {
-                printLog(e)
-            }
-            fullUrl = (host + json).addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
         }
         
         if  let nsurl = URL(string: fullUrl){
-            print(nsurl)
             let request : RequestUtil = RequestUtil(url: nsurl)
             request.method = (method == nil ? Api.GET : method!)
+            request.parameters =  parameters
             request.loadWithCompletion { response, json, error in
                 if let actualError = error {
                     print(actualError)
