@@ -19,7 +19,7 @@ open class Api {
     public static var DebugHOST =  ""
     public static var DebugWEB_HOST =  ""
     
-    public static let bodyType = ""//根据内定的规则去写
+    public static var bodyType = ""//根据内定的规则去写
 
     public class func WebHost() -> String {
        if isDebug {

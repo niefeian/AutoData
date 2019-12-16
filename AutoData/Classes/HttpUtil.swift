@@ -38,13 +38,18 @@ public class HttpUtil {
     
     open class func getHost(cb:@escaping CB) {
         HttpUtil.GET(Api.GETHOST, params: nil,noAutoParams:true) { (data) in
-            if let dic = data as? NSDictionary {
-               //这边后端下发规则自定义 配置域名
-            }
-        }
+           if let dic = data as? NSDictionary {
+              if let dics = dic.object(forKey: "webdomain") as? [String] , dics.count > 0{
+                    Api.WEB_HOST  = "http://" + (dics.last ?? "") + "/v1/page/"
+              }
+              if let dics = dic.object(forKey: "api") as? [NSDictionary] , dics.count > 0{
+                  Api.HOST = "http://" + (dics.last?.string(forKey: "ip") ?? "") + "/v1.zy/index.php"
+                  cb()
+              }
+           }
+       }
     }
- 
-    
+     
     private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false, insteadOss : Bool = false, closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
         
         if !ReachabilityNotificationView.getIsReachable(){
@@ -67,12 +72,14 @@ public class HttpUtil {
                 }
             }
             parameters["command"] = baseurl
+            fullUrl = host
         }
         
         if  let nsurl = URL(string: fullUrl){
             let request : RequestUtil = RequestUtil(url: nsurl)
             request.method = (method == nil ? Api.GET : method!)
             request.parameters =  parameters
+            request.bodyType = Api.bodyType
             request.loadWithCompletion { response, json, error in
                 if let actualError = error {
                     print(actualError)
