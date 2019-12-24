@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'AutoData'
-  s.version          = '0.0.5'
+  s.version          = '0.0.6'
   s.summary          = 'A short description of AutoData.'
 
 # This description is used to generate tags and improve search results.
@@ -42,4 +42,6 @@ TODO: Add long description of the pod here.
     s.dependency 'NFAToolkit'
     s.dependency 'NFASQLiteDB'
     s.dependency 'NFANetwork'
+    
+    s.swift_version = '5.0'
 end
