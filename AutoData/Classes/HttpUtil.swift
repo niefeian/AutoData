@@ -14,13 +14,13 @@ import AutoModel
 
 public class HttpUtil {
     
-    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CB? = nil , callback : @escaping CBWithParam) {
+    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CB? = nil , callback : @escaping CBWithParam) {
         if Api.BaseHost() == ""  && !url.hasPrefix("http"){
             getHost(cb: {
-                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
+                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
             })
         }else{
-            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
+            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
         }
     }
     
@@ -29,10 +29,10 @@ public class HttpUtil {
     open class func GET(_ url : String, params : Dictionary<String, String>? , noAutoParams : Bool = false , inSave : Bool = false  , callback : @escaping CBWithParam) {
         if Api.BaseHost() == "" && !url.hasPrefix("http"){
             getHost(cb: {
-              requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, inSave: inSave ,callback : callback)
+                requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, inSave: inSave, getLocal: false ,callback : callback)
             })
         }else{
-            requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, inSave: inSave , callback : callback)
+            requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, inSave: inSave, getLocal: false , callback : callback)
         }
     }
     
@@ -50,10 +50,15 @@ public class HttpUtil {
        }
     }
      
-    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
-        
+    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
+        if inSave && getLocal {
+            if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringValueDic(){
+               if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
+                callback(analysisdataModels(jsonData: jsonData as NSDictionary, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
+                }
+            }
+        }
         if !ReachabilityNotificationView.getIsReachable(){
-            
             return
         }
         
@@ -83,7 +88,6 @@ public class HttpUtil {
             request.bodyType = Api.bodyType
             request.loadWithCompletion { response, json, error in
                 if let actualError = error {
-                    print(actualError)
                     DispatchQueue.main.async(execute: {
                          errorCB?()
                     })
@@ -104,36 +108,8 @@ public class HttpUtil {
                                     SQLiteUtils.saveJosn(jsonData, type: baseurl)
                                 }
                                 if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
-                                    var dataObj = [String : AnyObject]()
-                                    for i in 0 ..< dataKeys.count {
-                                        let key = dataKeys[i]
-                                        if key.contains("->"){
-                                            let array = key.components(separatedBy: "->")
-                                            //二级解析
-                                            var dic = jsonData
-                                            for i in 0 ..< array.count - 1{
-                                                dic = jsonData[array[i]] as? NSDictionary ?? NSDictionary()
-                                            }
-                                            if let arr = dic[array.last ?? ""] as? [NSDictionary]{
-                                                dataObj[dataKeys[i]] =  analysisList(arr, objClass: dataModels[i]) as AnyObject
-                                            }else if let dic =  dic[array.last ?? ""] as? NSDictionary {
-                                                if let obj = analysisData(dic, objClass: dataModels[i]){
-                                                    dataObj[dataKeys[i]] = obj
-                                                }
-                                            }
-                                            
-                                        }else if let arr = jsonData[dataKeys[i]] as? [NSDictionary]{
-                                            dataObj[dataKeys[i]] =  analysisList(arr, objClass: dataModels[i]) as AnyObject
-                                        }else if let dic =  jsonData[dataKeys[i]] as? NSDictionary {
-                                            if let obj = analysisData(dic, objClass: dataModels[i]){
-                                                dataObj[dataKeys[i]] = obj
-                                            }
-                                        }else{
-                                            printLog("无法解析的数据类型呢")
-                                        }
-                                    }
                                     DispatchQueue.main.async(execute: {
-                                        callback(dataObj as AnyObject)
+                                        callback(analysisdataModels(jsonData: jsonData, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
                                     })
                                 }else{
                                     DispatchQueue.main.async(execute: {
@@ -168,6 +144,38 @@ public class HttpUtil {
         }else{
            printLog("链接不存在")
         }
+    }
+    
+    class func analysisdataModels(jsonData : NSDictionary , dataKeys : [String], dataModels : [AnyClass])  -> [String : AnyObject]{
+        var dataObj = [String : AnyObject]()
+        for i in 0 ..< dataKeys.count {
+            let key = dataKeys[i]
+            if key.contains("->"){
+                let array = key.components(separatedBy: "->")
+                //二级解析
+                var dic = jsonData
+                for i in 0 ..< array.count - 1{
+                    dic = jsonData[array[i]] as? NSDictionary ?? NSDictionary()
+                }
+                if let arr = dic[array.last ?? ""] as? [NSDictionary]{
+                    dataObj[dataKeys[i]] =  analysisList(arr, objClass: dataModels[i]) as AnyObject
+                }else if let dic =  dic[array.last ?? ""] as? NSDictionary {
+                    if let obj = analysisData(dic, objClass: dataModels[i]){
+                        dataObj[dataKeys[i]] = obj
+                    }
+                }
+                
+            }else if let arr = jsonData[dataKeys[i]] as? [NSDictionary]{
+                dataObj[dataKeys[i]] =  analysisList(arr, objClass: dataModels[i]) as AnyObject
+            }else if let dic =  jsonData[dataKeys[i]] as? NSDictionary {
+                if let obj = analysisData(dic, objClass: dataModels[i]){
+                    dataObj[dataKeys[i]] = obj
+                }
+            }else{
+                printLog("无法解析的数据类型呢")
+            }
+        }
+        return dataObj
     }
     
     
