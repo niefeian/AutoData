@@ -102,40 +102,42 @@ open class Tools {
     
     /// 回退到指定的界面
     open class func popToView(_ baseView : UIViewController, toViewClass : AnyClass) {
-        let views = baseView.navigationController?.viewControllers
-        var toView : UIViewController?
-        for view in views! {
-            let v = view as UIViewController
-            if v.classForCoder == toViewClass {
-                toView = v
-                break
+        if let views = baseView.navigationController?.viewControllers{
+            var toView : UIViewController?
+            for view in views {
+                let v = view as UIViewController
+                if v.classForCoder == toViewClass {
+                    toView = v
+                    break
+                }
+            }
+            if toView != nil {
+                baseView.navigationController?.popToViewController(toView!, animated: true)
             }
         }
-        if toView != nil {
-            baseView.navigationController?.popToViewController(toView!, animated: true)
-        }
+        
     }
     
     /// 构建标题：当文字超长时，采用titleView进行构建，否则下一个试图的title会偏移
-    open class func addTitleView(view : UIView, navigationItem : UINavigationItem, title : String?) {
-        let titleView = UILabel(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width - 100, height: 30))
-        //        titleView.text = ME.curClass?.title
+    open class func addTitleView(view : UIView, navigationItem : UINavigationItem, title : String? , textColor : UIColor = UIColor.black) {
+        let navigationH  : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 88: 64
+        let titleView = UILabel(frame: CGRect(x: navigationH - 40, y: 0, width: UIScreen.main.bounds.size.width - 100, height: 30))
         navigationItem.titleView = titleView
         DispatchQueue.main.async {
             let width = UIScreen.main.bounds.size.width  - 100
             let centerView = UILabel()
-            centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: 20, width: width, height: 44)
+            centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y:  navigationH - 40, width: width, height: 30)
             centerView.frame = (view.window?.convert(centerView.frame, to: navigationItem.titleView))!
             centerView.text = title
             centerView.textAlignment = .center
             centerView.font = UIFont.boldSystemFont(ofSize: 17)
-            centerView.textColor = UIColor.white
+            centerView.textColor = textColor
             navigationItem.titleView?.addSubview(centerView)
         }
     }
     
     /// 执行几次的动画
-    class func animationSomeTimes(_ time : TimeInterval = 0.2, count : Int = 1, doing : @escaping CBWithParam, finish : @escaping CB) {
+    open class func animationSomeTimes(_ time : TimeInterval = 0.2, count : Int = 1 , doing : @escaping CBWithParam , doend : @escaping CBWithParam, finish : @escaping CB) {
         if count < 1 {
             return
         }
@@ -143,15 +145,20 @@ open class Tools {
         UIView.animate(withDuration: time, animations: {
             c = count - 1
             doing(c as AnyObject?)
-            
         }, completion: { (Bool) in
             if c > 0 {
-                self.animationSomeTimes(time, count: c, doing: doing, finish: finish)
+                UIView.animate(withDuration: time, animations: {
+                    doend(c as AnyObject?)
+                }, completion: { (Bool) in
+                    self.animationSomeTimes(time, count: c, doing: doing, doend: doend, finish: finish)
+                })
             } else {
                 finish()
             }
-        }) 
+        })  
     }
+    
+    
     
     open class func delay(_ delay:Double, closure:@escaping ()->()) {
         DispatchQueue.main.asyncAfter(
@@ -319,6 +326,78 @@ open class Tools {
            maskLayer.frame = view.bounds
            maskLayer.path = maskPath.cgPath
            view.layer.mask = maskLayer
-       }
+    }
+    
+   open class func getViewController(_ storyboard : String,_ identifier : String)  -> UIViewController? {
+        let bord = UIStoryboard(name: storyboard, bundle: nil)
+        return bord.instantiateViewController(withIdentifier: identifier)
+    }
+    
+    open class func pushIndexView(_ baseView : UIViewController, storyboard : String, identifier : String, hideBottom : Bool = true, animator : Bool = true, index : Int = 0 , isNoContains : Bool = true  , fun:(UIViewController) -> Void) {
+            let bord = UIStoryboard(name: storyboard, bundle: nil)
+            let vw = bord.instantiateViewController(withIdentifier: identifier)
+            let navUI = vw as! UINavigationController
+            let child = navUI.children[0]
+            let childView = child as UIViewController
+            if hideBottom {
+                childView.hidesBottomBarWhenPushed = true
+            }
+           if var views = baseView.navigationController?.viewControllers {
+               while !( index > views.count || index == 0 || views.count < 2)
+               {
+                   views.removeLast()
+               }
+                 
+               views.append(childView)
+               baseView.navigationController?.setViewControllers(views, animated: true)
+           }
+           fun(childView)
+    }
+
+
+    open  class func addTitleView(view : UIView, navigationItem : UINavigationItem, title : String?) {
+
+        let navigationH : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 88 : 64
+        let titleView = UILabel(frame: CGRect(x: 0 , y: 0 , width: UIScreen.main.bounds.size.width - 100, height: navigationH))
+          navigationItem.titleView = titleView
+          DispatchQueue.main.async {
+              let width = UIScreen.main.bounds.size.width  - 100
+              let centerView = UILabel()
+              centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: 20, width: width, height: navigationH)
+              centerView.frame = (view.window?.convert(centerView.frame, to: navigationItem.titleView))!
+              centerView.text = title
+              centerView.textAlignment = .center
+              centerView.font = UIFont.boldSystemFont(ofSize: 17)
+              centerView.textColor = UIColor.black
+              navigationItem.titleView?.addSubview(centerView)
+          }
+    }
+    
+    open class func pushView(_ baseView : UIViewController, storyboard : String, identifier : String, hideBottom : Bool = true, animator : Bool = true, removeSelf : Bool = false , isNoContains : Bool = true  , fun:(UIViewController) -> Void) {
+        let bord = UIStoryboard(name: storyboard, bundle: nil)
+        let vw = bord.instantiateViewController(withIdentifier: identifier)
+        let navUI = vw as! UINavigationController
+        let child = navUI.children[0]
+        let childView = child as UIViewController
+        if hideBottom {
+            childView.hidesBottomBarWhenPushed = true
+        }
+        // 禁止重复打开
+        var views = baseView.navigationController?.viewControllers
+        if views?.count ?? 0 > 0  && isNoContains{
+            if childView.classForCoder == views![views!.count - 1].classForCoder {
+                return
+            }
+        }
+        
+        if removeSelf && views != nil {
+            views!.removeLast()
+            views!.append(childView)
+            baseView.navigationController?.setViewControllers(views!, animated: true)
+        } else {
+            baseView.navigationController?.pushViewController(childView, animated: animator)
+        }
+        fun(childView)
+    }
 
 }

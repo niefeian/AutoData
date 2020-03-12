@@ -14,25 +14,25 @@ import AutoModel
 
 public class HttpUtil {
     
-    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false, closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CB? = nil , callback : @escaping CBWithParam) {
+    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CB? = nil , callback : @escaping CBWithParam) {
         if Api.BaseHost() == ""  && !url.hasPrefix("http"){
             getHost(cb: {
-                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss, closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
+                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
             })
         }else{
-            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss, closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
+            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
         }
     }
     
     
     // GET 请求：异步
-    open class func GET(_ url : String, params : Dictionary<String, String>? , noAutoParams : Bool = false, callback : @escaping CBWithParam) {
+    open class func GET(_ url : String, params : Dictionary<String, String>? , noAutoParams : Bool = false , inSave : Bool = false  , callback : @escaping CBWithParam) {
         if Api.BaseHost() == "" && !url.hasPrefix("http"){
             getHost(cb: {
-              requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, callback : callback)
+              requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, inSave: inSave ,callback : callback)
             })
         }else{
-            requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, callback : callback)
+            requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, inSave: inSave , callback : callback)
         }
     }
     
@@ -50,9 +50,10 @@ public class HttpUtil {
        }
     }
      
-    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false, insteadOss : Bool = false, closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
+    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
         
         if !ReachabilityNotificationView.getIsReachable(){
+            
             return
         }
         
@@ -99,13 +100,14 @@ public class HttpUtil {
                             })
                         } else {
                             if let success =  jsonData["flag"] as? String , success == "1" {
+                                if inSave {
+                                    SQLiteUtils.saveJosn(jsonData, type: baseurl)
+                                }
                                 if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
                                     var dataObj = [String : AnyObject]()
                                     for i in 0 ..< dataKeys.count {
                                         let key = dataKeys[i]
-                                        if key == "-saveJosn"{
-                                            SQLiteUtils.saveJosn(jsonData, type: "\(dataModels[i])")
-                                        }else if key.contains("->"){
+                                        if key.contains("->"){
                                             let array = key.components(separatedBy: "->")
                                             //二级解析
                                             var dic = jsonData

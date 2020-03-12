@@ -16,6 +16,72 @@ public func printLog<T>(_ message : T, file : String = #file, method : String = 
     #endif
 }
 
+public let AppWidth: CGFloat = UIScreen.main.bounds.size.width
+public let AppHeight: CGFloat = UIScreen.main.bounds.size.height
+public let isIphoneX =  UIApplication.shared.statusBarFrame.height == 44
+public let MainBounds: CGRect = UIScreen.main.bounds
+public let StatusBarH : CGFloat = UIApplication.shared.statusBarFrame.height
+public let ScreenHeightTabBar : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 83 : 49
+
+
+public func pd6sW(_ pd : CGFloat) -> CGFloat{
+    return pd * AppWidth / 375
+}
+
+public func pd6sH(_ pd : CGFloat) -> CGFloat{
+    return pd * AppHeight / 568.0
+}
+
+public extension CGFloat {
+    var valueBetweenZeroAndOne: CGFloat {
+        return abs(self) > 1 ? 1 : abs(self)
+    }
+
+    var pd6sW : CGFloat {
+        return self * AppWidth / 375
+    }
+
+    var pd6sH : CGFloat {
+        return self * AppWidth / 375
+    }
+
+}
+
+
+public extension Int {
+    var pd6sW : CGFloat {
+        return CGFloat(self) * AppWidth / 375
+    }
+
+    var pd6sH : CGFloat {
+        return CGFloat(self) * AppWidth / 375
+    }
+
+}
+
+
+public extension UIColor {
+   class func initString( _ colorValue : String , alpha: CGFloat = 1) -> UIColor{
+        var str = colorValue.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines).uppercased()
+          if str.hasPrefix("#") {
+              str = str.replacingOccurrences(of: "#", with: "")
+          }
+          if str.count != 6 {
+              return .white
+          }
+          let redStr = str.prefix(2)
+          let greenStr = str.subString(start: 2, length: 2)
+          let blueStr = str.subString(start: 4)
+          var r:UInt64 = 0, g:UInt64 = 0, b:UInt64 = 0
+          Scanner(string: String(redStr)).scanHexInt64(&r)
+          Scanner(string: greenStr).scanHexInt64(&g)
+          Scanner(string: blueStr).scanHexInt64(&b)
+          return UIColor(red: CGFloat(r)/255.0, green: CGFloat(g)/255.0, blue: CGFloat(b)/255.0, alpha: alpha)
+    }
+}
+
+
+
 public extension String {
     // 从0开始截取到to的位置。如果to的位置超过文本的长度，返回原始文本。注意需要截取到的位置是原始位置+1，如20160101要截取年度，substringToIndex(5).注意参数是5，不是4
     func substringToIndex(_ to : Int) -> String {
@@ -113,18 +179,6 @@ public extension Dictionary {
     }
 }
 
-public extension CGFloat {
-    var valueBetweenZeroAndOne: CGFloat {
-        return abs(self) > 1 ? 1 : abs(self)
-    }
-}
-
-public extension UIImage {
-    class func sharedCache() -> NSCache<AnyObject, AnyObject>!
-    {
-        return NSCache()
-    }
-}
 
 /// 对UIView的扩展
 public extension UIView {
@@ -186,23 +240,92 @@ public extension String {
 
 public extension UILabel {
     
+    func setFont(_ font : CGFloat){
+       self.font = UIFont.systemFont(ofSize: pd6sW(font))
+    }
+
+    func setFont(_ font : CGFloat , weight : CGFloat){
+        if #available(iOS 8.2, *) {
+            self.font = UIFont.systemFont(ofSize: pd6sW(font), weight: UIFont.Weight.init(pd6sW(weight)))
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+
+
     func setLable(text : String ,lineSpacing:CGFloat = 10 ) {
+       let paraph = NSMutableParagraphStyle()
+       paraph.lineSpacing = lineSpacing
+       let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
+       self.attributedText = NSAttributedString(string: text, attributes: attributes)
+    }
+
+    func setLineSpacing(_ lineSpacing : CGFloat = 5 ) {
+       self.setLable(text: self.text ?? "", lineSpacing: lineSpacing)
+    }
+
+    func setAttrString2(string : String , lineSpacing:CGFloat = 5 , array : [([String],UIColor,CGFloat)]) {
+             let paraph = NSMutableParagraphStyle()
+             paraph.lineSpacing = lineSpacing
+             let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
+          let attrString = NSMutableAttributedString(string: string , attributes: attributes)
+       
+          for arr in array {
+              let attr: [NSAttributedString.Key : Any] = [.font: UIFont.systemFont(ofSize: arr.2),.foregroundColor: arr.1]
+           for subStr in arr.0{
+               let i  = string.positionOf(sub: subStr)
+             if  i >= 0  && i < string.count {
+                 attrString.addAttributes(attr, range:NSRange(location: string.positionOf(sub: subStr), length: subStr.count))
+             }
+           }
+          }
+          self.attributedText = attrString
+      }
+
+    func setAttrString(string : String , lineSpacing:CGFloat = 5 , array : [(String,UIColor,CGFloat)]) {
+          let paraph = NSMutableParagraphStyle()
+          paraph.lineSpacing = lineSpacing
+          let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
+       let attrString = NSMutableAttributedString(string: string , attributes: attributes)
+
+       for arr in array {
+           let attr: [NSAttributedString.Key : Any] = [.font: UIFont.systemFont(ofSize: arr.2),.foregroundColor: arr.1]
+           let i  = string.positionOf(sub: arr.0)
+           if  i >= 0  && i < string.count {
+               attrString.addAttributes(attr, range:NSRange(location: string.positionOf(sub: arr.0), length: arr.0.count))
+           }
+       }
+       self.attributedText = attrString
+    }
+
+
+    func setAttrStringAsyFont(string : String , lineSpacing:CGFloat = 5 , array : [(String,UIColor,CGFloat,CGFloat)]) {
+          let paraph = NSMutableParagraphStyle()
+          paraph.lineSpacing = lineSpacing
+          let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
+       let attrString = NSMutableAttributedString(string: string , attributes: attributes)
+
+       for arr in array {
+            if #available(iOS 8.2, *) {
+                let attr: [NSAttributedString.Key : Any] = [.font: UIFont.systemFont(ofSize: arr.2, weight: UIFont.Weight.init(arr.3)),.foregroundColor: arr.1]
+                let i  = string.positionOf(sub: arr.0)
+                if  i >= 0  && i < string.count {
+                    attrString.addAttributes(attr, range:NSRange(location: string.positionOf(sub: arr.0), length: arr.0.count))
+                }
+            } else {
+                // Fallback on earlier versions
+            }
+       }
+       self.attributedText = attrString
+    }
+
+    func setAttrStrings(string : String , lineSpacing:CGFloat = 5 , array : [(String,UIColor,CGFloat)], arrays : [(String,[NSAttributedString.Key : Any])]) {
         let paraph = NSMutableParagraphStyle()
         paraph.lineSpacing = lineSpacing
+
         let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
-        self.attributedText = NSAttributedString(string: text, attributes: attributes)
-    }
-    
-    func setLineSpacing(_ lineSpacing : CGFloat = 5 ) {
-        self.setLable(text: self.text ?? "", lineSpacing: lineSpacing)
-    }
-    
-    func setAttrString(string : String , lineSpacing:CGFloat = 5 , array : [(String,UIColor,CGFloat)]) {
-           let paraph = NSMutableParagraphStyle()
-           paraph.lineSpacing = lineSpacing
-           let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
         let attrString = NSMutableAttributedString(string: string , attributes: attributes)
-     
+
         for arr in array {
             let attr: [NSAttributedString.Key : Any] = [.font: UIFont.systemFont(ofSize: arr.2),.foregroundColor: arr.1]
             let i  = string.positionOf(sub: arr.0)
@@ -210,29 +333,39 @@ public extension UILabel {
                 attrString.addAttributes(attr, range:NSRange(location: string.positionOf(sub: arr.0), length: arr.0.count))
             }
         }
+
+        for arr in arrays {
+        let i  = string.positionOf(sub: arr.0)
+            if  i >= 0  && i < string.count {
+                attrString.addAttributes(arr.1, range:NSRange(location:i, length: arr.0.count))
+            }
+        }
         self.attributedText = attrString
     }
-    
+
     func setAttrStrings(string : String , lineSpacing:CGFloat = 5 , array : [(String,[NSAttributedString.Key : Any])]) {
-          let paraph = NSMutableParagraphStyle()
-          paraph.lineSpacing = lineSpacing
-          let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
-       let attrString = NSMutableAttributedString(string: string , attributes: attributes)
-    
-       for arr in array {
-            attrString.addAttributes(arr.1, range:NSRange(location: string.positionOf(sub: arr.0), length: arr.0.count))
-       }
-       self.attributedText = attrString
-      }
+        let paraph = NSMutableParagraphStyle()
+        paraph.lineSpacing = lineSpacing
+        let attributes = [NSAttributedString.Key.paragraphStyle: paraph]
+        let attrString = NSMutableAttributedString(string: string , attributes: attributes)
+        for arr in array {
+            let i  = string.positionOf(sub: arr.0)
+            if  i >= 0  && i < string.count {
+                attrString.addAttributes(arr.1, range:NSRange(location:i, length: arr.0.count))
+            }
+        }
+        self.attributedText = attrString
+    }
+
 }
 
 
 public extension NSDictionary {
-    
+
     func string(forKey key : String, _ defaultValue : String = "") -> String{
         return object(forKey: key) as? String ?? defaultValue
     }
-    
+
     func integer(forKey key : String, _ defaultValue : Int = 0) -> Int{
         if  let integer = object(forKey: key) as? Int {
             return integer
@@ -241,7 +374,7 @@ public extension NSDictionary {
         }
         return  defaultValue
     }
-    
+
     func doubleValue(forKey key : String, _ defaultValue : Double = 0.0) -> Double{
         if  let integer = object(forKey: key) as? Double {
             return integer
@@ -253,6 +386,7 @@ public extension NSDictionary {
 }
 
  public extension Int {
+   
     var cn1: String {
         get {
             if self == 0 {
@@ -311,4 +445,15 @@ public extension NSDictionary {
             return cn
         }
     }
+}
+
+public extension UITextField{
+    
+    func setAttributedPlaceholderIColor(_ color : UIColor) {
+        if let string = self.placeholder {
+            self.attributedPlaceholder =  NSAttributedString.init(string:string, attributes: [
+                NSAttributedString.Key.foregroundColor:color])
+        }
+    }
+       
 }

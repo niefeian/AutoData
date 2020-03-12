@@ -16,20 +16,15 @@ public typealias CB = () -> Void
 
 
 public protocol IPageDataPost {
-    /// 当前页面索引
-    func setPageIndex(_ index : Int)
-    /// 用户自定义数据
-    func setUserData(_ data : AnyObject?)
-    
+    func setPageIndex(_ index : Int)/// 当前页面索引
+    func setUserData(_ data : AnyObject?)/// 用户自定义数据
     func getUserData() -> AnyObject?
     func getPageIndex() -> Int
 }
 
 public protocol IDataPost {
-    
     /// 注册回调函数
     func regCallBack(_ cb : @escaping CBWithParam)
-    
     /// 传输数据
     func postData(_ data : AnyObject?)
 }
