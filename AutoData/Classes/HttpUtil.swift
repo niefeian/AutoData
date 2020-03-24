@@ -123,6 +123,9 @@ public class HttpUtil {
                                         callback(jsonData)
                                     })
                                 }else{
+                                    if let debug =  jsonData["debug"] as? String{
+                                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: debug)
+                                    }
                                     DispatchQueue.main.async(execute: {
                                         errorCB?()
                                     })
