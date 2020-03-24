@@ -1,5 +1,6 @@
 use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
+
 target 'AutoData_Example' do
   pod 'AutoData', :path => '../'
 
