@@ -83,6 +83,9 @@ public class HttpUtil {
             parameters["command"] = baseurl
             fullUrl = host
         }
+        if Api.lastAddition {
+            fullUrl += baseurl
+        }
         
         if  let nsurl = URL(string: fullUrl){
             let request : RequestUtil = RequestUtil(url: nsurl)
