@@ -58,7 +58,10 @@ public class HttpUtil {
                 }
             }
         }
+        
         if !ReachabilityNotificationView.getIsReachable(){
+             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: "当前网络不稳定")
+            errorCB?()
             return
         }
         
