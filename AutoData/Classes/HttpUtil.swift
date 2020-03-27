@@ -97,6 +97,9 @@ public class HttpUtil {
                     DispatchQueue.main.async(execute: {
                          errorCB?()
                     })
+                    #if DEBUG
+                        SQLiteUtils.insetError(actualError.localizedDescription,url: Api.HOST + baseurl)
+                     #endif
                 }else if let data = json , data.count != 0 {
                     #if DEBUG
                     let content = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
@@ -134,6 +137,9 @@ public class HttpUtil {
                                         if isDebug {
                                             if let debug =  jsonData["debug"] as? String{
                                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: debug)
+                                                #if DEBUG
+                                                SQLiteUtils.insetError(debug,url: Api.HOST + baseurl)
+                                                #endif
                                             }
                                         }
                                         errorCB?()
@@ -142,18 +148,30 @@ public class HttpUtil {
                             }
                         }
                     } catch let e{
+                        #if DEBUG
                         printLog(e)
+                        SQLiteUtils.insetError(e.localizedDescription,url: Api.HOST + baseurl)
+                        #endif
+                     
                         DispatchQueue.main.async(execute: {
                             errorCB?()
                         })
                     }
                 }else{
+                    #if DEBUG
+                                          
+                                           SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
+                                           #endif
                     DispatchQueue.main.async(execute: {
                         errorCB?()
                     })
                 }
             }
         }else{
+//            _ json : String , key : String , url : String
+            #if DEBUG
+            SQLiteUtils.insetError("链接不存在",url: Api.HOST + baseurl)
+              #endif
            printLog("链接不存在")
         }
     }

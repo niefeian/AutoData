@@ -32,6 +32,16 @@ open class SQLiteUtils {
         
     }
     
+    public class func insetError(_ info : String  , url : String) {
+           let param = NSMutableArray()
+           param.add(Tools.getUUID())
+           param.add(info)
+           param.add(url)
+           let insert = "insert into http_error (id , info  , url) values(?,?,?)"
+           _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
+           
+    }
+    
     //因为我们是根据出生算的
     public class func saveJosn(_ map : NSDictionary , type : String) {
         var json : String = ""
