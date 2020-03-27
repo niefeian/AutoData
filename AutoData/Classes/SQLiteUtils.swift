@@ -32,12 +32,14 @@ open class SQLiteUtils {
         
     }
     
-    public class func insetError(_ info : String  , url : String) {
+    public class func insetError(_ info : String  , url : String , desc : String = "") {
            let param = NSMutableArray()
            param.add(Tools.getUUID())
            param.add(info)
            param.add(url)
-           let insert = "insert into http_error (id , info  , url) values(?,?,?)"
+          param.add(desc)
+//
+           let insert = "insert into http_error (id , info  , url  , desc) values(?,?,?,?)"
            _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
            
     }

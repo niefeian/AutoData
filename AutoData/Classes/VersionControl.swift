@@ -26,7 +26,7 @@ open class VersionControl {
     }
     
     class func updateVersion2() {
-           _ = SQLiteDB.sharedInstance().execute("CREATE TABLE http_error(id VARCHAR(36) PRIMARY KEY NOT NULL , url VARCHAR(120)  , info json , startTime VARCHAR(40));")
+           _ = SQLiteDB.sharedInstance().execute("CREATE TABLE http_error(id VARCHAR(36) PRIMARY KEY NOT NULL , url VARCHAR(120)  , info json , desc VARCHAR(220) , startTime VARCHAR(40));")
            UserDefaults.standard.set(2, forKey: "Constants.APP_CACHE.DB_VERSION")
        }
     

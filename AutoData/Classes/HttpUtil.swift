@@ -138,7 +138,7 @@ public class HttpUtil {
                                             if let debug =  jsonData["debug"] as? String{
                                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: debug)
                                                 #if DEBUG
-                                                SQLiteUtils.insetError(debug,url: Api.HOST + baseurl)
+                                                SQLiteUtils.insetError(parameters.dicValueString() ?? "",url: Api.HOST + baseurl,desc: debug)
                                                 #endif
                                             }
                                         }
@@ -152,16 +152,14 @@ public class HttpUtil {
                         printLog(e)
                         SQLiteUtils.insetError(e.localizedDescription,url: Api.HOST + baseurl)
                         #endif
-                     
                         DispatchQueue.main.async(execute: {
                             errorCB?()
                         })
                     }
                 }else{
                     #if DEBUG
-                                          
-                                           SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
-                                           #endif
+                    SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
+                    #endif
                     DispatchQueue.main.async(execute: {
                         errorCB?()
                     })
