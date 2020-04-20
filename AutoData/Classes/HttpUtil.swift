@@ -14,7 +14,7 @@ import AutoModel
 
 public class HttpUtil {
     
-    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CB? = nil , callback : @escaping CBWithParam) {
+    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CBWithParam? = nil , callback : @escaping CBWithParam) {
         if Api.BaseHost() == ""  && !url.hasPrefix("http"){
             getHost(cb: {
                 requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
@@ -50,7 +50,7 @@ public class HttpUtil {
        }
     }
      
-    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
+    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
         if inSave && getLocal {
             if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringToDic(){
                if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
@@ -61,7 +61,7 @@ public class HttpUtil {
         
         if !ReachabilityNotificationView.getIsReachable(){
              NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: "当前网络不稳定")
-            errorCB?()
+            errorCB?(nil)
             return
         }
         
@@ -95,7 +95,7 @@ public class HttpUtil {
             request.loadWithCompletion { response, json, error in
                 if let actualError = error {
                     DispatchQueue.main.async(execute: {
-                         errorCB?()
+                         errorCB?(actualError)
                     })
                     #if DEBUG
                         SQLiteUtils.insetError(actualError.localizedDescription,url: Api.HOST + baseurl)
@@ -142,7 +142,7 @@ public class HttpUtil {
                                                 #endif
                                             }
                                         }
-                                        errorCB?()
+                                        errorCB?(jsonData)
                                     })
                                 }
                             }
@@ -153,7 +153,7 @@ public class HttpUtil {
                         SQLiteUtils.insetError(e.localizedDescription,url: Api.HOST + baseurl)
                         #endif
                         DispatchQueue.main.async(execute: {
-                            errorCB?()
+                            errorCB?(e as AnyObject)
                         })
                     }
                 }else{
@@ -161,12 +161,11 @@ public class HttpUtil {
                     SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
                     #endif
                     DispatchQueue.main.async(execute: {
-                        errorCB?()
+                        errorCB?(nil)
                     })
                 }
             }
         }else{
-//            _ json : String , key : String , url : String
             #if DEBUG
             SQLiteUtils.insetError("链接不存在",url: Api.HOST + baseurl)
               #endif
