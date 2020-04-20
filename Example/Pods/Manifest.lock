@@ -1,10 +1,10 @@
 PODS:
-  - AutoData (0.0.16):
+  - AutoData (0.0.17):
     - AutoModel
     - NFANetwork
     - NFASQLiteDB
     - NFAToolkit
-  - AutoModel (0.0.5)
+  - AutoModel (0.0.6)
   - FBSnapshotTestCase (2.1.4):
     - FBSnapshotTestCase/SwiftSupport (= 2.1.4)
   - FBSnapshotTestCase/Core (2.1.4)
@@ -48,8 +48,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AutoData: 5fad6249a13a1fc5a5445bc086e67844579d4bb9
-  AutoModel: bc6e3c72145375476f4759199570cc6cd74b8f70
+  AutoData: c2d196414a12aaebbf0dfcdf9fd373f2f81768b1
+  AutoModel: 8e46b4fe5e4d8a74468ec0d086e5950e310db216
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   NFANetwork: 353ebc5cceb5f59d6147aee02a93ae97a754f965
   NFASQLiteDB: cd375370d3c3549c1df2323dc4008678fb869d3d

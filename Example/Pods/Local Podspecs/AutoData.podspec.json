@@ -1,7 +1,7 @@
 {
   "name": "AutoData",
-  "version": "0.0.16",
-  "summary": "A short description of AutoData.",
+  "version": "0.0.17",
+  "summary": "网络请求，数据解析",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/niefeian/AutoData",
   "license": {
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/niefeian/AutoData.git",
-    "tag": "0.0.16"
+    "tag": "0.0.17"
   },
   "platforms": {
     "ios": "8.0"
