@@ -1,5 +1,5 @@
 PODS:
-  - AutoData (0.0.10):
+  - AutoData (0.0.15):
     - AutoModel
     - NFANetwork
     - NFASQLiteDB
@@ -12,7 +12,7 @@ PODS:
     - FBSnapshotTestCase/Core
   - NFANetwork (0.0.7)
   - NFASQLiteDB (0.0.1)
-  - NFAToolkit (0.0.15)
+  - NFAToolkit (0.0.17)
   - Nimble (7.3.4)
   - Nimble-Snapshots (6.3.0):
     - Nimble-Snapshots/Core (= 6.3.0)
@@ -48,12 +48,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AutoData: 26dec4e5daaf5d84921b261b7bfa25bae7a920ed
+  AutoData: 7d9d88b75367e945e10aa3ffec25fd6809ff581d
   AutoModel: bc6e3c72145375476f4759199570cc6cd74b8f70
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
   NFANetwork: 353ebc5cceb5f59d6147aee02a93ae97a754f965
   NFASQLiteDB: cd375370d3c3549c1df2323dc4008678fb869d3d
-  NFAToolkit: 35d8391f4b55c0a6d7b7cb1b0f0d17392f6b1b1e
+  NFAToolkit: 92b11f5c75c267ae3ce6e316073c4d5e6b8407e9
   Nimble: 051e3d8912d40138fa5591c78594f95fb172af37
   Nimble-Snapshots: f5459b5b091678dc942d03ec4741cacb58ba4a52
   Quick: 58d203b1c5e27fff7229c4c1ae445ad7069a7a08

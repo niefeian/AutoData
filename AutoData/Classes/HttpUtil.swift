@@ -52,7 +52,7 @@ public class HttpUtil {
      
     private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CB? = nil){
         if inSave && getLocal {
-            if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringValueDic(){
+            if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringToDic(){
                if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
                 callback(analysisdataModels(jsonData: jsonData as NSDictionary, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
                 }
@@ -174,7 +174,7 @@ public class HttpUtil {
         }
     }
     
-    class func analysisdataModels(jsonData : NSDictionary , dataKeys : [String], dataModels : [AnyClass])  -> [String : AnyObject]{
+    class public func analysisdataModels(jsonData : NSDictionary , dataKeys : [String], dataModels : [AnyClass])  -> [String : AnyObject]{
         var dataObj = [String : AnyObject]()
         for i in 0 ..< dataKeys.count {
             let key = dataKeys[i]
