@@ -15,6 +15,6 @@ target 'AutoData_Example' do
     pod 'NFAToolkit'
     pod 'NFASQLiteDB'
     pod 'NFANetwork'
-    pod 'NFAFile'
+#    pod 'NFAFile'
   end
 end
