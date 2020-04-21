@@ -36,7 +36,7 @@ TODO: Add long description of the pod here.
 #   'AutoData' => ['AutoData/Assets/*.db']
 #  }
 
-   s.public_header_files = 'Pod/Classes/**/*.h'
+#   s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
     s.dependency 'AutoModel'
     s.dependency 'NFAToolkit'

@@ -1,6 +1,6 @@
 {
   "name": "AutoData",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "summary": "A short description of AutoData.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/niefeian/AutoData",
@@ -13,13 +13,12 @@
   },
   "source": {
     "git": "https://github.com/niefeian/AutoData.git",
-    "tag": "0.0.17"
+    "tag": "0.1.0"
   },
   "platforms": {
     "ios": "8.0"
   },
   "source_files": "AutoData/Classes/**/*",
-  "public_header_files": "Pod/Classes/**/*.h",
   "dependencies": {
     "AutoModel": [
 
