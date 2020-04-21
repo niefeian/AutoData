@@ -1,0 +1,6 @@
+framework module NFAFile {
+  umbrella header "NFAFile-umbrella.h"
+
+  export *
+  module * { export * }
+}
