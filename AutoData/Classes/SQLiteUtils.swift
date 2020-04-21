@@ -29,7 +29,6 @@ open class SQLiteUtils {
         param.add(type)
         let insert = "insert into josn_table (id , json , key , type) values(?,?,?,?)"
         _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
-        
     }
     
     public class func insetError(_ info : String  , url : String , desc : String = "") {
