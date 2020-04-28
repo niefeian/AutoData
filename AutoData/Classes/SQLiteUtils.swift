@@ -10,7 +10,36 @@ import AutoModel
 import NFAToolkit
 import NFASQLiteDB
 
+public func printLogInsatll<T>(_ message : T, file : String = #file, method : String = #function, line : Int = #line) {
+    #if DEBUG
+    print(file)
+    print("\(line),\(method):\n\(message)")
+    SQLiteUtils.insetApplog("\(file)\n\(line),\(method):\n\(message)")
+    #endif
+}
+
+
 open class SQLiteUtils {
+    
+    public class func insetApplog(_ json : String ){
+        let param = NSMutableArray()
+        param.add(Tools.getUUID())
+        param.add(json)
+        let nowDate = Date()
+        param.add("\(nowDate.timeIntervalSince1970)")
+        param.add("\(DateUtil.dateTimeToStr(nowDate))")
+        let insert = "insert into applog(id , log , time_stamp  , startTime) values(?,?,?,?)"
+        _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
+    }
+    
+    public class func sleApplog(){
+        let insert = "select * from  applog  order by time_stamp desc limit 0,1000; "
+        let rows = SQLiteDB.sharedInstance().query(insert)
+        for row in rows{
+            print(row.getStringColumnData("log"))
+        }
+        
+    }
     
    public class func insetBaseModel(_ vo : BaseModel , key : String , type : String) {
         var json : String = ""
@@ -37,7 +66,6 @@ open class SQLiteUtils {
            param.add(info)
            param.add(url)
           param.add(desc)
-//
            let insert = "insert into http_error (id , info  , url  , desc) values(?,?,?,?)"
            _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
            
