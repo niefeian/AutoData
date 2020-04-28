@@ -1,4 +1,4 @@
-framework module NFANetwork {
+module NFANetwork {
   umbrella header "NFANetwork-umbrella.h"
 
   export *

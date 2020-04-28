@@ -1,4 +1,4 @@
-framework module Pods_AutoData_Tests {
+module Pods_AutoData_Tests {
   umbrella header "Pods-AutoData_Tests-umbrella.h"
 
   export *

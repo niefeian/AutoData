@@ -1,4 +1,4 @@
-framework module AutoData {
+module AutoData {
   umbrella header "AutoData-umbrella.h"
 
   export *

@@ -1,4 +1,4 @@
-framework module NFASQLiteDB {
+module NFASQLiteDB {
   umbrella header "NFASQLiteDB-umbrella.h"
 
   export *

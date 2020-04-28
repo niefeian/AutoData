@@ -1,4 +1,4 @@
-framework module Pods_AutoData_Example {
+module Pods_AutoData_Example {
   umbrella header "Pods-AutoData_Example-umbrella.h"
 
   export *

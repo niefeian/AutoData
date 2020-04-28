@@ -1,4 +1,4 @@
-framework module AutoModel {
+module AutoModel {
   umbrella header "AutoModel-umbrella.h"
 
   export *
