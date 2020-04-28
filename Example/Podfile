@@ -1,5 +1,6 @@
 use_frameworks!
 source 'https://github.com/CocoaPods/Specs.git'
+
 #source 'https://cdn.cocoapods.org/'
 target 'AutoData_Example' do
   pod 'AutoData', :path => '../'
@@ -11,6 +12,7 @@ target 'AutoData_Example' do
     pod 'Nimble', '~> 7.0'
     pod 'FBSnapshotTestCase' , '~> 2.1.4'
     pod 'Nimble-Snapshots' , '~> 6.3.0'
+   
     pod 'AutoModel'
     pod 'NFAToolkit'
     pod 'NFASQLiteDB'

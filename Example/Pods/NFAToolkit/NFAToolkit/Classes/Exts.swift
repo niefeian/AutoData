@@ -16,6 +16,8 @@ public func printLog<T>(_ message : T, file : String = #file, method : String = 
     #endif
 }
 
+
+
 public let AppWidth: CGFloat = UIScreen.main.bounds.size.width
 public let AppHeight: CGFloat = UIScreen.main.bounds.size.height
 public let isIphoneX =  UIApplication.shared.statusBarFrame.height == 44
