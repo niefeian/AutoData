@@ -5,22 +5,38 @@
 //  Copyright © 2019 聂飞安. All rights reserved.
 //
 import UIKit
-
+import NFANetwork
 public var isDebug = false
+
 
 open class Api {
    
     public static let POST = "POST"
     public static let GET = "GET"
-
     public static var GETHOST = ""
     public static var HOST =  ""
     public static var WEB_HOST =  ""
     public static var DebugHOST =  ""
     public static var DebugWEB_HOST =  ""
-    
-    public static var bodyType = ""//根据内定的规则去写
+    public static var server =  ""
+    public static var hiddenfunc =  ""
+    public static var port =  ""
+    public static var cginame =  ""
+    public static var IP =  ""
+    public static var bodyType : HTTP_BODY_TYPE = .飞COM{
+        didSet{
+            if bodyType == .飞COM {
+                successCod = "flag"
+            }else if bodyType == .天COM {
+                successCod = "status"
+            }
+        }
+    }
+    //根据内定的规则去写
+    public static var appVersion  = "1"//应用版本
 
+    public static var successCod = "flag"
+    
     public class func WebHost() -> String {
        if isDebug {
            return DebugWEB_HOST
@@ -46,5 +62,4 @@ open class Api {
     public static var lastAddition = false //如果这个开启，接口将采用host + api 
 
     public static var commonPara : [String:String]!
-    public static var josnKey : String = ""//这个是用来保存后端下发的数据的一种简易方式
 }

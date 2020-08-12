@@ -29,7 +29,7 @@ open class VersionControl {
         _ = SQLiteDB.sharedInstance().execute("CREATE TABLE IF NOT EXISTS  applog(id VARCHAR(36) PRIMARY KEY NOT NULL , log json , time_stamp VARCHAR(40), startTime VARCHAR(40));")
         UserDefaults.standard.set(3, forKey: "Constants.APP_CACHE.DB_VERSION")
     }
-
+    
     
     class func updateVersion2() {
         _ = SQLiteDB.sharedInstance().execute("CREATE TABLE IF NOT EXISTS  http_error(id VARCHAR(36) PRIMARY KEY NOT NULL , url VARCHAR(120)  , info json , desc VARCHAR(220) , startTime VARCHAR(40));")

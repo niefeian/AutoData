@@ -14,7 +14,10 @@ import AutoModel
 
 public class HttpUtil {
     
-    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, errorCB : CBWithParam? = nil , callback : @escaping CBWithParam) {
+    static var urlLocks = [String]()
+    
+    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = false, errorCB : CBWithParam? = nil , callback : @escaping CBWithParam) {
+        
         if Api.BaseHost() == ""  && !url.hasPrefix("http"){
             getHost(cb: {
                 requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
@@ -37,74 +40,140 @@ public class HttpUtil {
     }
     
     open class func getHost(cb:@escaping CB) {
+
         HttpUtil.GET(Api.GETHOST, params: nil,noAutoParams:true) { (data) in
-           if let dic = data as? NSDictionary {
-              if let dics = dic.object(forKey: "webdomain") as? [String] , dics.count > 0{
-                    Api.WEB_HOST  = "http://" + (dics.last ?? "") + "/v1/page/"
+           if let dic = data as? NSDictionary
+           {
+                Api.server = dic.string(forKey: "server")
+                Api.hiddenfunc = dic.string(forKey: "hiddenfunc")
+              if let dics = dic.object(forKey: "webdomain") as? [String] , dics.count > 0
+              {
+                Api.WEB_HOST  = "http://" + (dics.last ?? "") + "/v1/page/"
               }
-              if let dics = dic.object(forKey: "api") as? [NSDictionary] , dics.count > 0{
-                  Api.HOST = "http://" + (dics.last?.string(forKey: "ip") ?? "") + "/v1.zy/index.php"
-                  cb()
+            
+            if let dics = dic.object(forKey: "api") as? [NSDictionary] , dics.count > 0
+              {
+                Api.HOST = "http://" + (dics.last?.string(forKey: "ip") ?? "") + "/v1/index.php"
+                Api.cginame = dics.last?.string(forKey: "cginame") ?? "api.feifeiapp.com"
+                Api.port = dics.last?.string(forKey: "port") ?? "6220"
+                Api.IP = dics.last?.string(forKey: "ip") ?? "api.feiyo.net"
+                cb()
               }
            }
+            
        }
+    }
+    
+    //获得历史数据
+    public class func getHistoryData(_ baseurl : String , params : Dictionary<String, String>? = nil , keys : [String]?  = nil, models : [AnyClass]?  = nil  , callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
+        if let josn = SQLiteUtils.getJosn(baseurl) , josn.count > 0 ,  let jsonData = josn.stringToDic()
+        {
+            if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
+                callback(analysisdataModels(jsonData: jsonData as NSDictionary, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
+            }
+        }else{
+            errorCB?(nil)
+        }
+    }
+    
+    public class func deleteHistoryData(_ baseurl : String , params : Dictionary<String, String>? = nil){
+        SQLiteUtils.deletBaseModel(key: baseurl)
+    }
+    
+    public class func saveJosnHistoryData(_ baseurl : String , params : NSDictionary){
+        SQLiteUtils.saveJosn(params, type: baseurl)
     }
      
     private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
-        if inSave && getLocal {
-            if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringToDic(){
-               if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count {
-                callback(analysisdataModels(jsonData: jsonData as NSDictionary, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
+        
+        if inSave && getLocal
+        {
+            if let josn = SQLiteUtils.getJosn(baseurl) ,  let jsonData = josn.stringToDic()
+            {
+               if let  dataModels = models , let dataKeys = keys , dataModels.count == dataKeys.count
+               {
+                    callback(analysisdataModels(jsonData: jsonData as NSDictionary, dataKeys: dataKeys, dataModels: dataModels) as AnyObject)
                 }
             }
         }
         
-        if !ReachabilityNotificationView.getIsReachable(){
-             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: "当前网络不稳定")
+        if !ReachabilityNotificationView.getIsReachable()
+        {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FloatTips"), object: "当前网络不稳定")
             errorCB?(nil)
             return
         }
         
+        if urlLocks.contains(baseurl) && baseurl != "apicurrency::setresult"
+        {
+            return
+        }
+        
+        urlLocks.append(baseurl)
+        
         var fullUrl = ""
         var parameters: Dictionary<String, String> = Dictionary()
-        if noAutoParams || baseurl.hasPrefix("http"){
+       
+        if noAutoParams || baseurl.hasPrefix("http")
+        {
             fullUrl = baseurl
-        }else{
-            if params != nil {
-                for (key, value) in params! {
+        }
+        else
+        {
+            if params != nil
+            {
+                for (key, value) in params!
+                {
                     parameters[key] = value
                 }
             }
-            if Api.commonPara != nil {
-                for (key, value) in Api.commonPara!{
+            
+            if Api.commonPara != nil
+            {
+                for (key, value) in Api.commonPara!
+                {
                     parameters[key] = value
                 }
             }
-            parameters["command"] = baseurl
+            
+            if Api.bodyType == .飞COM
+            {
+               parameters["command"] = baseurl
+            }
+            else if Api.bodyType == .飞2COM
+            {
+               parameters["m"] = baseurl
+            }
             fullUrl = host
         }
-        if Api.lastAddition {
+        
+        if Api.lastAddition
+        {
             fullUrl += baseurl
         }
         
-        if  let nsurl = URL(string: fullUrl){
+        if  let nsurl = URL(string: fullUrl)
+        {
             let request : RequestUtil = RequestUtil(url: nsurl)
             request.method = (method == nil ? Api.GET : method!)
             request.parameters =  parameters
             request.bodyType = Api.bodyType
             request.loadWithCompletion { response, json, error in
+                
                 if let actualError = error {
                     DispatchQueue.main.async(execute: {
                          errorCB?(actualError)
                     })
                     #if DEBUG
                         SQLiteUtils.insetError(actualError.localizedDescription,url: Api.HOST + baseurl)
-                     #endif
-                }else if let data = json , data.count != 0 {
-                    #if DEBUG
-                    let content = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
-                    print(content ?? "")
                     #endif
+                }else if let data = json , data.count != 0
+                {
+                    if isDebug
+                    {
+                        let content = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                        print(content ?? "")
+                    }
                     do {
                         let jsonData = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! NSDictionary
                         if insteadOss {
@@ -112,7 +181,7 @@ public class HttpUtil {
                                 callback(jsonData)
                             })
                         } else {
-                            if let success =  jsonData["flag"] as? String , success == "1" {
+                            if  jsonData.string(forKey: Api.successCod)  == "1" || jsonData.bool(forKey:  Api.successCod){
                                 if inSave {
                                     SQLiteUtils.saveJosn(jsonData, type: baseurl)
                                 }
@@ -125,7 +194,6 @@ public class HttpUtil {
                                        callback(jsonData)
                                     })
                                 }
-                             
                             } else {
                                 if method == Api.GET {
                                     DispatchQueue.main.async(execute: {
@@ -134,15 +202,13 @@ public class HttpUtil {
                                 }else{
                                    
                                     DispatchQueue.main.async(execute: {
-                                        if isDebug {
+                                        if showErrorMsg {
                                             if let debug =  jsonData["debug"] as? String{
-                                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "showLondTips"), object: debug)
-                                                #if DEBUG
-                                                SQLiteUtils.insetError(parameters.dicValueString() ?? "",url: Api.HOST + baseurl,desc: debug)
-                                                #endif
+                                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "FloatTips"), object: debug)
                                             }
                                         }
-                                        errorCB?(jsonData)
+                                        let content = NSString(data: data, encoding: String.Encoding.utf8.rawValue)
+                                        errorCB?(content)
                                     })
                                 }
                             }
@@ -164,12 +230,17 @@ public class HttpUtil {
                         errorCB?(nil)
                     })
                 }
+                Tools.delay(0.01) {
+                   urlLocks.removeAll { (key) -> Bool in
+                       return key == baseurl
+                   }
+                }
             }
         }else{
-            #if DEBUG
-            SQLiteUtils.insetError("链接不存在",url: Api.HOST + baseurl)
-              #endif
            printLog("链接不存在")
+            urlLocks.removeAll { (key) -> Bool in
+                return key == baseurl
+            }
         }
     }
     
@@ -251,7 +322,6 @@ public class HttpUtil {
                         })
                     }
                 }
-                
                 session.finishTasksAndInvalidate()
                 } as! (Data?, URLResponse?, Error?) -> Void).resume()
         }

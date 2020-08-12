@@ -81,17 +81,17 @@ open class SQLiteUtils {
         }catch _ {
             
         }
-        if selectBaseModel(key: Api.josnKey + type){
-             let update = "update josn_table set json = ?  where key = ?"
+        if selectBaseModel(key: Api.appVersion + type){
+            let update = "update josn_table set json = ?  where key = ?"
             let param = NSMutableArray()
-               param.add(json)
-            param.add(Api.josnKey)
+            param.add(json)
+            param.add(Api.appVersion + type)
             _ = SQLiteDB.sharedInstance().execute(update, parameters: param)
         }else{
             let param = NSMutableArray()
             param.add(Tools.getUUID())
             param.add(json)
-            param.add(Api.josnKey + type)
+            param.add(Api.appVersion + type)
             param.add(type)
             let insert = "insert into  josn_table (id , json , key , type) values(?,?,?,?)"
             _ = SQLiteDB.sharedInstance().execute(insert, parameters: param)
@@ -101,7 +101,7 @@ open class SQLiteUtils {
     public class func getJosn(_ type : String)->String?{
         let sql = "select * from josn_table where key = ? "
         let param = NSMutableArray()
-        param.add(Api.josnKey + type)
+        param.add(Api.appVersion + type)
         return SQLiteDB.sharedInstance().query(sql,parameters: param).first?.getStringColumnData("json")
     }
     
@@ -122,7 +122,7 @@ open class SQLiteUtils {
     public class func deletBaseModel(key : String){
         let sql = "delete  from josn_table where key = ? "
         let param = NSMutableArray()
-        param.add(key)
+        param.add(Api.appVersion + key)
         SQLiteDB.sharedInstance().execute(sql,parameters: param)
     }
     
