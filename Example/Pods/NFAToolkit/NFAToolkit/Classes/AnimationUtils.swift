@@ -8,7 +8,7 @@
 import UIKit
 
 public enum AnimationType {
-      case 缩放 , 旋转
+      case 缩放 , 旋转 , 上下
 }
 
 open class AnimationUtils{
@@ -16,9 +16,12 @@ open class AnimationUtils{
     public class func animation(_ view: UIView  ,  fromValue : Double? , toValue :  Double? , duration : Float?, type : AnimationType ,  repeatCount : Float = HUGE  , autoreverses : Bool = true , isRemovedOnCompletion : Bool = false) -> Void {
         switch type {
         case .旋转:
-            self.animation(view, keyPath: "transform.rotation.z", fromValue: 0, toValue: toValue ?? Double.pi * 2, duration: duration ?? 3, repeatCount: repeatCount, autoreverses: autoreverses, isRemovedOnCompletion: isRemovedOnCompletion)
+            self.animation(view, keyPath: "transform.rotation.z", fromValue: fromValue ?? 0, toValue: toValue ?? Double.pi * 2, duration: duration ?? 3, repeatCount: repeatCount, autoreverses: autoreverses, isRemovedOnCompletion: isRemovedOnCompletion)
         case .缩放:
              self.animation(view, keyPath: "transform.scale", fromValue: fromValue ?? 0.9, toValue: toValue ?? 1.1, duration: duration ?? 2, repeatCount: repeatCount, autoreverses: autoreverses, isRemovedOnCompletion: isRemovedOnCompletion)
+        case .上下:
+              self.animation(view, keyPath: "position.y", fromValue: fromValue ?? 0, toValue: toValue ?? 2, duration: duration ?? 3, repeatCount: repeatCount, autoreverses: autoreverses, isRemovedOnCompletion: isRemovedOnCompletion)
+            break
         }
         
     }
@@ -35,6 +38,18 @@ open class AnimationUtils{
            anim.isRemovedOnCompletion = isRemovedOnCompletion
            view.layer.add(anim, forKey: keyPath) // 给需要旋转的view增加动画
     }
+    /*
+     旋转：transform.rotation、transform.rotation.x、transform.rotation、transform.rotation.z
+     缩放：transform.scale、transform.scale.x、transform.scale.y、transform.scale.z
+     平移：transform.translation、transform.translation.x、transform.translation.y、transform.translation.z
+
+
+     改变中心点位置：position、position.x、position.y
+     改变Frame相关：bounds.size、bounds.size.width、bounds.size.height、bounds.origin.x、bounds.origin.y
+
+
+     
+     */
     
     /*
      // MARK: - 旋转动画

@@ -14,7 +14,6 @@ public typealias CBWithParam = (AnyObject?) -> Void
 /// 无参数的回调
 public typealias CB = () -> Void
 
-
 public protocol IPageDataPost {
     func setPageIndex(_ index : Int)/// 当前页面索引
     func setUserData(_ data : AnyObject?)/// 用户自定义数据

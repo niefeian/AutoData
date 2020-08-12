@@ -1,6 +1,5 @@
 ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FBSnapshotTestCase" "${PODS_ROOT}/Headers/Public/Nimble" "${PODS_ROOT}/Headers/Public/Nimble-Snapshots" "${PODS_ROOT}/Headers/Public/Quick"
 LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AutoData" "${PODS_CONFIGURATION_BUILD_DIR}/AutoModel" "${PODS_CONFIGURATION_BUILD_DIR}/NFANetwork" "${PODS_CONFIGURATION_BUILD_DIR}/NFASQLiteDB" "${PODS_CONFIGURATION_BUILD_DIR}/NFAToolkit"
 OTHER_CFLAGS = $(inherited) -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/AutoData/AutoData.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/AutoModel/AutoModel.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/NFANetwork/NFANetwork.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/NFASQLiteDB/NFASQLiteDB.modulemap" -fmodule-map-file="${PODS_CONFIGURATION_BUILD_DIR}/NFAToolkit/NFAToolkit.modulemap"
 OTHER_LDFLAGS = $(inherited) -ObjC -l"AutoData" -l"AutoModel" -l"NFANetwork" -l"NFASQLiteDB" -l"NFAToolkit"

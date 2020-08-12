@@ -87,6 +87,30 @@ open class Tools {
         fun(childView)
     }
     
+    open class func pushView(_ baseView : UIViewController, toView : UIViewController , hideBottom : Bool = true, animator : Bool = true , repeatSelf : Bool = true , removeSelf : Bool = false, fun:(UIViewController) -> Void) {
+           let childView = toView
+           if hideBottom {
+               childView.hidesBottomBarWhenPushed = true
+           }
+           // 禁止重复打开
+           var views = baseView.navigationController?.viewControllers
+           if views?.count ?? 0 > 0 && !repeatSelf {
+               if childView.classForCoder == views![views!.count - 1].classForCoder {
+                   return
+               }
+           }
+           
+            fun(childView)
+           if removeSelf && views != nil {
+               views!.removeLast()
+               views!.append(childView)
+               baseView.navigationController?.setViewControllers(views!, animated: true)
+           } else {
+               baseView.navigationController?.pushViewController(childView, animated: animator)
+           }
+           
+    }
+    
     /// 以根节点的方式打开
     open class func rootView(_ window : UIWindow, storyboard : String, identify : String) {
         let bord = UIStoryboard(name: storyboard, bundle: nil)
@@ -101,7 +125,7 @@ open class Tools {
     }
     
     /// 回退到指定的界面
-    open class func popToView(_ baseView : UIViewController, toViewClass : AnyClass) {
+    open class func popToView(_ baseView : UIViewController, toViewClass : AnyClass) -> Bool{
         if let views = baseView.navigationController?.viewControllers{
             var toView : UIViewController?
             for view in views {
@@ -113,9 +137,10 @@ open class Tools {
             }
             if toView != nil {
                 baseView.navigationController?.popToViewController(toView!, animated: true)
+                return true
             }
         }
-        
+        return false
     }
     
     /// 构建标题：当文字超长时，采用titleView进行构建，否则下一个试图的title会偏移
@@ -320,12 +345,39 @@ open class Tools {
         cornerView.layer.borderColor = borderColor.cgColor
     }
     
+    
+    /// 部分圆角
+    ///
+    /// - Parameters:
+    ///   - corners: 需要实现为圆角的角，可传入多个
+    ///   - radii: 圆角半径
+    //    let corners: UIRectCorner = [.bottomLeft,.bottomRight]
     open class  func serCorner( _ view : UIView , byRoundingCorners corners: UIRectCorner, radii: CGFloat) {
            let maskPath = UIBezierPath(roundedRect: view.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: radii, height: radii))
            let maskLayer = CAShapeLayer()
            maskLayer.frame = view.bounds
            maskLayer.path = maskPath.cgPath
            view.layer.mask = maskLayer
+    }
+    
+    
+    //设置阴影背景
+    open class func setShadow(view:UIView,width:CGFloat,bColor:UIColor,
+                   sColor:UIColor,offset:CGSize,opacity:Float,radius:CGFloat) {
+        //设置视图边框宽度
+        view.layer.borderWidth = width
+        //设置边框颜色
+        view.layer.borderColor = bColor.cgColor
+        //设置边框圆角
+        view.layer.cornerRadius = radius
+        //设置阴影颜色
+        view.layer.shadowColor = sColor.cgColor
+        //设置透明度
+        view.layer.shadowOpacity = opacity
+        //设置阴影半径
+        view.layer.shadowRadius = radius
+        //设置阴影偏移量
+        view.layer.shadowOffset = offset
     }
     
    open class func getViewController(_ storyboard : String,_ identifier : String)  -> UIViewController? {
@@ -363,7 +415,7 @@ open class Tools {
           DispatchQueue.main.async {
               let width = UIScreen.main.bounds.size.width  - 100
               let centerView = UILabel()
-              centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: 20, width: width, height: navigationH)
+              centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: navigationH - 44, width: width, height: 44)
               centerView.frame = (view.window?.convert(centerView.frame, to: navigationItem.titleView))!
               centerView.text = title
               centerView.textAlignment = .center
@@ -372,6 +424,29 @@ open class Tools {
               navigationItem.titleView?.addSubview(centerView)
           }
     }
+    
+    open  class func addTitleView(baseView : UIViewController, title : String?) {
+
+           let navigationH : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 88 : 64
+           let titleView = UILabel(frame: CGRect(x: 0 , y: 0 , width: UIScreen.main.bounds.size.width - 100, height: navigationH))
+            baseView.navigationItem.titleView = titleView
+             DispatchQueue.main.async {
+                let width = UIScreen.main.bounds.size.width  - 100
+                let centerView = UILabel()
+                centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: navigationH - 44, width: width, height: 44)
+                if baseView.navigationItem.titleView != nil
+                {
+                    centerView.frame = (baseView.view.window?.convert(centerView.frame, to: baseView.navigationItem.titleView))!
+                }
+                
+                centerView.text = title
+                centerView.textAlignment = .center
+                centerView.font = UIFont.boldSystemFont(ofSize: 17)
+                centerView.textColor = UIColor.black
+                baseView.navigationItem.titleView?.addSubview(centerView)
+             }
+       }
+
     
     open class func pushView(_ baseView : UIViewController, storyboard : String, identifier : String, hideBottom : Bool = true, animator : Bool = true, removeSelf : Bool = false , isNoContains : Bool = true  , fun:(UIViewController) -> Void) {
         let bord = UIStoryboard(name: storyboard, bundle: nil)
@@ -399,5 +474,106 @@ open class Tools {
         }
         fun(childView)
     }
-
+    
+    /// 表格中section区间内从第n行开始增加rows行
+       open class func insertRows(count : Int, at tableView : UITableView, from : Int, where sectionEqual : Int) {
+           var indexPaths = [IndexPath]()
+           for i in 0..<count {
+               indexPaths.append(IndexPath(row: from + i, section: sectionEqual))
+           }
+           tableView.insertRows(at: indexPaths, with: UITableView.RowAnimation.none)
+       }
+       
+      open class func removeRows(count : Int, at tableView : UITableView, from : Int, where sectionEqual : Int){
+           var indexPaths = [IndexPath]()
+           for i in 0..<count {
+               indexPaths.append(IndexPath(row: from + i, section: sectionEqual))
+           }
+           tableView.deleteRows(at: indexPaths, with: .none)
+       }
+    
+    
+    open class func reloadRows(oldCount : Int , newCount : Int , at tableView : UITableView , where sectionEqual : Int) {
+        let add = newCount > oldCount
+        let maxCount = add ? newCount : oldCount
+        let minCount = !add ? newCount : oldCount
+        var indexPaths = [IndexPath]()
+        
+        for i in 0..<maxCount-minCount {
+            indexPaths.append(IndexPath(row: minCount + i, section: sectionEqual))
+        }
+        
+        if add {
+            tableView.insertRows(at: indexPaths, with: UITableView.RowAnimation.none)
+        }else{
+            tableView.deleteRows(at: indexPaths, with: .none)
+        }
+    }
+    
+    open class func updateRows(oldCount : Int , newCount : Int , at tableView : UITableView , where sectionEqual : Int , beginRow : Int = 0) {
+        if oldCount != newCount {
+            tableView.beginUpdates()
+            Tools.reloadRows(oldCount: oldCount, newCount: newCount, at: tableView, where: sectionEqual)
+            tableView.endUpdates()
+        }
+        
+        var indexPaths = [IndexPath]()
+        for i in 0 ..<  newCount{
+          indexPaths.append(IndexPath.init(row: i + beginRow, section: sectionEqual))
+        }
+        if indexPaths.count > 0
+        {
+             tableView.reloadRows(at: indexPaths, with: .none)
+        }
+       
+    }
+       
+    // 添加毛玻璃
+       open class func addBlurSetWith(_ imageView: UIImageView) {
+           
+           //首先创建一个模糊效果
+           let blurEffect = UIBlurEffect(style: .light)
+           //接着创建一个承载模糊效果的视图
+           let blurView = UIVisualEffectView(effect: blurEffect)
+           //设置模糊视图的大小（全屏）
+           blurView.frame.size = CGSize(width: AppWidth, height: AppHeight*220/667 + 100)
+           //添加模糊视图到页面view上（模糊视图下方都会有模糊效果)
+           imageView.addSubview(blurView)
+       }
+    
+    //验证手机号码
+     open class func isTelphoneNumber(_ str: String) -> Bool {
+          let num = str
+          let mobile = "(1)\\d{10}$"
+          let regextestmobile = NSPredicate(format: "SELF MATCHES %@",mobile)
+          return regextestmobile.evaluate(with: num)
+      }
+      
+    
+    open class func bytesToAvaiUnit(bytes : CGFloat) -> String{
+          if bytes < 10 {
+              return "0KB"
+          }else if bytes >= 10 && bytes < 1024{
+              return  String(format: "%.2fB", bytes)
+          }else if bytes >= 10 && bytes < 1024 * 1024{
+              return  String(format: "%.2fKB", bytes / 1024)
+          }else if bytes >= 1024 * 1024 && bytes < 1024 * 1024 * 1024{
+              return  String(format: "%.2fMB", bytes / (1024 * 1024))
+          }else{
+              return  String(format: "%.2fGB", bytes / (1024 * 1024 * 1024))
+          }
+      }
+    
+    
+    
+    open class func getTextFirstX(_ textCount : Int , spacing : CGFloat , textSize : CGFloat , centreX : CGFloat) -> CGFloat
+    {
+        if textCount == 0
+        {
+            return 0
+        }
+        return centreX - (textCount%2 == 1 ? (CGFloat(textCount - 1)/2*(textSize + spacing) + 0.5 * textSize) : (CGFloat(textCount/2) * (textSize + spacing) - 0.5 * spacing))
+    }
+    
 }
+

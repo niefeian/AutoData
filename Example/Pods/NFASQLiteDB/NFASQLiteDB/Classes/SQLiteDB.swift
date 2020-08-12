@@ -70,7 +70,7 @@ public func getDoubleColumnData(_ row : SQLRow, field : String) -> Double?{
 }
 
 open class SQLRow {
-    var data : [String:Any]!
+    open var data : [String:Any]!
     
     open func getColumnData(_ field : String) -> AnyObject? {
         return data[field] as AnyObject

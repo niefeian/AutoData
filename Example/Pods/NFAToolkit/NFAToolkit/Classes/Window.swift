@@ -30,6 +30,22 @@ public func AppWindow() ->UIWindow {
         }
     }
     
-    return UIApplication.shared.delegate?.window! ?? UIApplication.shared.keyWindow!
+    return  UIApplication.shared.keyWindow ?? UIWindow()
 }
 
+
+public func AppViewController() -> UIViewController? {
+    var viewController = AppWindow().rootViewController
+    while(true) {
+        if (viewController?.isKind(of: UITabBarController.self))! {
+            viewController = (viewController as! UITabBarController).selectedViewController
+        }else if (viewController?.isKind(of: UINavigationController.self))!{
+            viewController = (viewController as! UINavigationController).visibleViewController
+        }else if ((viewController?.presentedViewController) != nil){
+            viewController =  viewController?.presentedViewController
+        } else {
+            break
+        }
+    }
+    return viewController
+}
