@@ -5,7 +5,7 @@ PODS:
     - NFASQLiteDB
     - NFAToolkit
   - AutoModel (0.1.4)
-  - NFANetwork (0.0.8)
+  - NFANetwork (0.0.9)
   - NFASQLiteDB (0.0.2)
   - NFAToolkit (0.1.1)
 
@@ -30,7 +30,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AutoData: ab912eb7767fb742c4dcaeb77180e5429a0b6a31
   AutoModel: cbd219be08706a516db246fa3937d3209221637c
-  NFANetwork: e35e23dabcd371e57ea9b09330f139a88ed42cc7
+  NFANetwork: 9ecd1e0e3570cfc7e2996c0e66c28dd2944f65cf
   NFASQLiteDB: 7f764cd43889ee06bbaf3d79d4fbb1a575eebfd0
   NFAToolkit: 71585955a80b8d7b820939e6e256ace92c998120
 
