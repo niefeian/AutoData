@@ -14,31 +14,33 @@ import AutoModel
 
 public class HttpUtil {
     
-    static var urlLocks = [String]()
     
-    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = false, errorCB : CBWithParam? = nil , callback : @escaping CBWithParam) {
-        
+    open class func POST(_ url : String, params : Dictionary<String, String>?,  keys : [String]?  = nil, models : [AnyClass]?  = nil , ignoreSign : Bool = false, insteadOss : Bool = false , inSave : Bool = false , getLocal : Bool = false , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = false , bodyData : Data? = nil,  headers: Dictionary<String, String>? = nil, errorCB : CBWithParam? = nil , callback : @escaping CBWithParam) {
+        /*
         if Api.BaseHost() == ""  && !url.hasPrefix("http"){
             getHost(cb: {
-                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
+                requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models,  insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , isReconnection: closeLoadingAnimate, showErrorMsg: showErrorMsg, bodyData:bodyData, callback: callback, errorCB: errorCB)
             })
         }else{
-            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models, ignoreSign: ignoreSign, insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , closeLoadingAnimate: closeLoadingAnimate, showErrorMsg: showErrorMsg, callback: callback, errorCB: errorCB)
-        }
+ */
+            requestHttp(url, host: Api.BaseHost(), method:  Api.POST, params: params, keys: keys, models: models,  insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , isReconnection: closeLoadingAnimate, showErrorMsg: showErrorMsg, bodyData:bodyData, headers: headers, callback: callback, errorCB: errorCB)
+//        }
     }
     
     
     // GET 请求：异步
-    open class func GET(_ url : String, params : Dictionary<String, String>? , noAutoParams : Bool = false , inSave : Bool = false  , callback : @escaping CBWithParam) {
+    open class func GET(_ url : String, params : Dictionary<String, String>? , noAutoParams : Bool = false , inSave : Bool = false , bodyData : Data? = nil ,  headers: Dictionary<String, String>? = nil, callback : @escaping CBWithParam) {
+        /*
         if Api.BaseHost() == "" && !url.hasPrefix("http"){
             getHost(cb: {
-                requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, inSave: inSave, getLocal: false ,callback : callback)
+                requestHttp(url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:false, inSave: inSave, getLocal: false , bodyData:bodyData,callback : callback)
             })
         }else{
-            requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, inSave: inSave, getLocal: false , callback : callback)
-        }
+            */
+        requestHttp( url, host: Api.BaseHost(), method : Api.GET, params : params,noAutoParams:noAutoParams, inSave: inSave, getLocal: false , bodyData:bodyData, headers: headers, callback : callback)
+//        }
     }
-    
+    /*
     open class func getHost(cb:@escaping CB) {
 
         HttpUtil.GET(Api.GETHOST, params: nil,noAutoParams:true) { (data) in
@@ -48,7 +50,7 @@ public class HttpUtil {
                 Api.hiddenfunc = dic.string(forKey: "hiddenfunc")
               if let dics = dic.object(forKey: "webdomain") as? [String] , dics.count > 0
               {
-                Api.WEB_HOST  = "http://" + (dics.last ?? "") + "/v1/page/"
+                    Api.WEB_HOST  = "http://" + (dics.last ?? "") + "/v1/page/"
               }
             
             if let dics = dic.object(forKey: "api") as? [NSDictionary] , dics.count > 0
@@ -63,6 +65,7 @@ public class HttpUtil {
             
        }
     }
+ */
     
     //获得历史数据
     public class func getHistoryData(_ baseurl : String , params : Dictionary<String, String>? = nil , keys : [String]?  = nil, models : [AnyClass]?  = nil  , callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
@@ -84,7 +87,7 @@ public class HttpUtil {
         SQLiteUtils.saveJosn(params, type: baseurl)
     }
      
-    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  , ignoreSign : Bool = false , insteadOss : Bool = false , inSave : Bool , getLocal : Bool , closeLoadingAnimate : Bool = true, showErrorMsg : Bool = true, callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
+    private class func requestHttp(_ baseurl : String, host : String, backUpUrl : String? = nil, method : String?, params : Dictionary<String, String>?, noAutoParams : Bool = false , keys : [String]?  = nil, models : [AnyClass]?  = nil  ,insteadOss : Bool = false , inSave : Bool , getLocal : Bool , isReconnection : Bool = true, showErrorMsg : Bool = true , bodyData : Data? ,  headers: Dictionary<String, String>?, callback : @escaping (AnyObject?) -> Void , errorCB : CBWithParam? = nil){
         
         if inSave && getLocal
         {
@@ -104,12 +107,6 @@ public class HttpUtil {
             return
         }
         
-        if urlLocks.contains(baseurl) && baseurl != "apicurrency::setresult"
-        {
-            return
-        }
-        
-        urlLocks.append(baseurl)
         
         var fullUrl = ""
         var parameters: Dictionary<String, String> = Dictionary()
@@ -158,16 +155,31 @@ public class HttpUtil {
             request.method = (method == nil ? Api.GET : method!)
             request.parameters =  parameters
             request.bodyType = Api.bodyType
+            request.bodyData = bodyData
+            if headers != nil
+            {
+                request.headers = headers!
+            }
             request.loadWithCompletion { response, json, error in
                 
                 if let actualError = error {
                     DispatchQueue.main.async(execute: {
-                         errorCB?(actualError)
+                        if isReconnection
+                        {
+                            requestHttp(baseurl, host: host, method: method, params: params, keys: keys, models: models,  insteadOss: insteadOss,inSave: inSave, getLocal: getLocal  , isReconnection: false, showErrorMsg: showErrorMsg, bodyData : bodyData, headers: headers, callback: callback, errorCB: errorCB)
+                        }
+                        else
+                        {
+                             errorCB?(actualError)
+                        }
                     })
                     #if DEBUG
-                        SQLiteUtils.insetError(actualError.localizedDescription,url: Api.HOST + baseurl)
+//                        print(actualError.localizedDescription)
+//                       print(Api.HOST + baseurl)
+//                        SQLiteUtils.insetError(actualError.localizedDescription,url: Api.HOST + baseurl)
                     #endif
-                }else if let data = json , data.count != 0
+                }
+                else if let data = json , data.count != 0
                 {
                     if isDebug
                     {
@@ -216,7 +228,7 @@ public class HttpUtil {
                     } catch let e{
                         #if DEBUG
                         printLog(e)
-                        SQLiteUtils.insetError(e.localizedDescription,url: Api.HOST + baseurl)
+//                        SQLiteUtils.insetError(e.localizedDescription,url: Api.HOST + baseurl)
                         #endif
                         DispatchQueue.main.async(execute: {
                             errorCB?(e as AnyObject)
@@ -224,23 +236,15 @@ public class HttpUtil {
                     }
                 }else{
                     #if DEBUG
-                    SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
+//                    SQLiteUtils.insetError("数据无法解析",url: Api.HOST + baseurl)
                     #endif
                     DispatchQueue.main.async(execute: {
                         errorCB?(nil)
                     })
                 }
-                Tools.delay(0.01) {
-                   urlLocks.removeAll { (key) -> Bool in
-                       return key == baseurl
-                   }
-                }
-            }
+                            }
         }else{
            printLog("链接不存在")
-            urlLocks.removeAll { (key) -> Bool in
-                return key == baseurl
-            }
         }
     }
     
