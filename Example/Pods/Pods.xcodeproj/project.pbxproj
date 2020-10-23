@@ -1209,31 +1209,6 @@
 			};
 			name = Debug;
 		};
-		2B426F1E5418096CF72265E28DB96D60 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E24BB6A6DF64E25D8B707A18F651CA90 /* AutoData.debug.xcconfig */;
-			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				GCC_PREFIX_HEADER = "Target Support Files/AutoData/AutoData-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MODULEMAP_FILE = Headers/Public/AutoData/AutoData.modulemap;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRIVATE_HEADERS_FOLDER_PATH = "";
-				PRODUCT_MODULE_NAME = AutoData;
-				PRODUCT_NAME = AutoData;
-				PUBLIC_HEADERS_FOLDER_PATH = "";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		2BF064CCA5CD6CA6228F4E01B261CCA8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 20B50517B0A76DFE177C818C1BB9E410 /* Pods-AutoData_Tests.debug.xcconfig */;
@@ -1364,6 +1339,31 @@
 			};
 			name = Debug;
 		};
+		6C97DCC271469537BE0074D7239C8670 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E24BB6A6DF64E25D8B707A18F651CA90 /* AutoData.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				GCC_PREFIX_HEADER = "Target Support Files/AutoData/AutoData-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MODULEMAP_FILE = Headers/Public/AutoData/AutoData.modulemap;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRIVATE_HEADERS_FOLDER_PATH = "";
+				PRODUCT_MODULE_NAME = AutoData;
+				PRODUCT_NAME = AutoData;
+				PUBLIC_HEADERS_FOLDER_PATH = "";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		6F5848C82646E24F1C0C31528E2172F9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = DB96C333C9F7342E9E308B401260F5E9 /* NFANetwork.release.xcconfig */;
@@ -1390,7 +1390,7 @@
 			};
 			name = Release;
 		};
-		7763F31FAF58528557C3832E71C0453D /* Release */ = {
+		75D2D2580866991D5407EADB6E7F07CD /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F3F3AB141106B13082B38DF1779853C9 /* AutoData.release.xcconfig */;
 			buildSettings = {
@@ -1399,7 +1399,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				GCC_PREFIX_HEADER = "Target Support Files/AutoData/AutoData-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MODULEMAP_FILE = Headers/Public/AutoData/AutoData.modulemap;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
@@ -1647,8 +1647,8 @@
 		58BB3E765913A8429E11ABCEAC6D2301 /* Build configuration list for PBXNativeTarget "AutoData" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2B426F1E5418096CF72265E28DB96D60 /* Debug */,
-				7763F31FAF58528557C3832E71C0453D /* Release */,
+				6C97DCC271469537BE0074D7239C8670 /* Debug */,
+				75D2D2580866991D5407EADB6E7F07CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

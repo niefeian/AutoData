@@ -1,5 +1,5 @@
 PODS:
-  - AutoData (0.1.5):
+  - AutoData (0.1.6):
     - AutoModel
     - NFANetwork
     - NFASQLiteDB
@@ -28,7 +28,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AutoData: 4076e978f3322066baaffcafb90a3ca696490b5b
+  AutoData: ab912eb7767fb742c4dcaeb77180e5429a0b6a31
   AutoModel: cbd219be08706a516db246fa3937d3209221637c
   NFANetwork: e35e23dabcd371e57ea9b09330f139a88ed42cc7
   NFASQLiteDB: 7f764cd43889ee06bbaf3d79d4fbb1a575eebfd0
