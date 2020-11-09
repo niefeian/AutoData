@@ -171,20 +171,20 @@
 		2B179C91097A84E82E53F04F52E6FAEE /* MirrorUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MirrorUtils.swift; path = AutoModel/Classes/MirrorUtils.swift; sourceTree = "<group>"; };
 		2E636ABB4E69EE7DF986BE5282FCB11E /* NFAToolkit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NFAToolkit.debug.xcconfig; sourceTree = "<group>"; };
 		309ECC568C9EF432B623148AAF49DF58 /* DateUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DateUtil.swift; path = NFAToolkit/Classes/DateUtil.swift; sourceTree = "<group>"; };
-		38FF3E5EF55C8DC8D1E75A76A2198B0F /* libPods-AutoData_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-AutoData_Tests.a"; path = "libPods-AutoData_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		38FF3E5EF55C8DC8D1E75A76A2198B0F /* libPods-AutoData_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoData_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3C786F5FC21138F15A449C80BDB1481C /* Tools.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Tools.swift; path = NFAToolkit/Classes/Tools.swift; sourceTree = "<group>"; };
 		40A121898B684A0E317FDB78E9DAE810 /* NFAToolkit-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NFAToolkit-umbrella.h"; sourceTree = "<group>"; };
 		4328C43FBA99CB9F490BB78E9CDD6A10 /* AutoData-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AutoData-dummy.m"; sourceTree = "<group>"; };
 		48647CACB6A55BAE202285AA958B8FD6 /* NFASQLiteDB.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NFASQLiteDB.release.xcconfig; sourceTree = "<group>"; };
 		492D12784F505D6805F403CB1C3A160A /* Pods-AutoData_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-AutoData_Example-dummy.m"; sourceTree = "<group>"; };
-		4DDE3B964D327620EE4D952E7828D044 /* data.db */ = {isa = PBXFileReference; includeInIndex = 1; name = data.db; path = NFASQLiteDB/Assets/data.db; sourceTree = "<group>"; };
-		4F4D8E937846DC7FAED6BCEF860585B9 /* libNFASQLiteDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libNFASQLiteDB.a; path = libNFASQLiteDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		584BD01ADEFF0CCD4DFB9E73189B84E9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		4DDE3B964D327620EE4D952E7828D044 /* data.db */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = data.db; path = NFASQLiteDB/Assets/data.db; sourceTree = "<group>"; };
+		4F4D8E937846DC7FAED6BCEF860585B9 /* libNFASQLiteDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNFASQLiteDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		584BD01ADEFF0CCD4DFB9E73189B84E9 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5E6B96A316CDF68DF9FE5A61A1B80220 /* KeychainManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = KeychainManager.swift; path = NFAToolkit/Classes/KeychainManager.swift; sourceTree = "<group>"; };
 		5F08123646B95679814D2119F950F544 /* Pods-AutoData_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-AutoData_Example-umbrella.h"; sourceTree = "<group>"; };
 		60EED7C98000E6B1720A3CF32A6E3EFA /* AutoData.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AutoData.modulemap; sourceTree = "<group>"; };
-		6428F199E9529068F1879F48DE4D5E5E /* libNFANetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libNFANetwork.a; path = libNFANetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		6A58599BA808C84B596F843D13B9421A /* libAutoModel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAutoModel.a; path = libAutoModel.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6428F199E9529068F1879F48DE4D5E5E /* libNFANetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNFANetwork.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		6A58599BA808C84B596F843D13B9421A /* libAutoModel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAutoModel.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		6A8CBE69C3D80BA6070900F897160946 /* NFANetwork-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NFANetwork-dummy.m"; sourceTree = "<group>"; };
 		6ECAEC1277958DF05A5EF0C9D434FA25 /* NFAToolkit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NFAToolkit.release.xcconfig; sourceTree = "<group>"; };
 		72DA1CE8184D48460C5585DDF66231D0 /* AutoData-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AutoData-prefix.pch"; sourceTree = "<group>"; };
@@ -192,7 +192,7 @@
 		75987A9A2EED1330B78DE1028FDCF10C /* Pods-AutoData_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-AutoData_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		75F13DE4AA49B5DD90F9C3A46926655D /* NFASQLiteDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NFASQLiteDB-dummy.m"; sourceTree = "<group>"; };
 		7646357DC7D7BC7D066FA8EFC1944C3A /* AutoModel.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AutoModel.modulemap; sourceTree = "<group>"; };
-		77C8EED176C77B01845F84EED5F625A8 /* libPods-AutoData_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-AutoData_Example.a"; path = "libPods-AutoData_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		77C8EED176C77B01845F84EED5F625A8 /* libPods-AutoData_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AutoData_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A2A320DC65DAB373FDA42F310DFE093 /* AppOperation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AppOperation.swift; path = NFAToolkit/Classes/AppOperation.swift; sourceTree = "<group>"; };
 		90D588E93B24F0AF7064BC4577C7CA20 /* BaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BaseModel.swift; path = AutoModel/Classes/BaseModel.swift; sourceTree = "<group>"; };
 		92784598EF4958E9C0FDC13AF29E15AC /* Pods-AutoData_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AutoData_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -200,10 +200,10 @@
 		97217CC56F9CB627586CB2C678B3BA5D /* Pods-AutoData_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-AutoData_Tests.modulemap"; sourceTree = "<group>"; };
 		98224C188560E266348BE4AFA61143DB /* Api.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Api.swift; path = AutoData/Classes/Api.swift; sourceTree = "<group>"; };
 		9D17BBC42428CA8DAD4EA36C02242F33 /* AutoData-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AutoData-umbrella.h"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9F10BF95AECDF1BE8F321653DCA3C1CF /* Pods-AutoData_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-AutoData_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		A0386685939C8E485980DA97B7191B94 /* AutoData.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AutoData.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A08954C2E850D67719C313305419FF1E /* NFASQLiteDB.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = NFASQLiteDB.bundle; path = "NFASQLiteDB-NFASQLiteDB.bundle"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0386685939C8E485980DA97B7191B94 /* AutoData.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = AutoData.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A08954C2E850D67719C313305419FF1E /* NFASQLiteDB.bundle */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NFASQLiteDB.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10C578D820AD7F2C7D517E1E8B390EC /* HttpUtil.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = HttpUtil.swift; path = AutoData/Classes/HttpUtil.swift; sourceTree = "<group>"; };
 		A151BD8DFAB75EA4331C07617806D41E /* AutoModel-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AutoModel-umbrella.h"; sourceTree = "<group>"; };
 		A338B4779C75F9484429B4C394B619ED /* Pods-AutoData_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-AutoData_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -225,14 +225,14 @@
 		DFAE4F624729DACFF4C5A74228FCE980 /* NFAToolkit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = NFAToolkit.modulemap; sourceTree = "<group>"; };
 		E24BB6A6DF64E25D8B707A18F651CA90 /* AutoData.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AutoData.debug.xcconfig; sourceTree = "<group>"; };
 		E34A9A06ADDBDFBF45C0CD3BAFB03105 /* Reachability.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Reachability.swift; path = NFANetwork/Classes/Reachability.swift; sourceTree = "<group>"; };
-		E7D1611A3F3D2F0332F5091B258CE6ED /* libNFAToolkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libNFAToolkit.a; path = libNFAToolkit.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E7D1611A3F3D2F0332F5091B258CE6ED /* libNFAToolkit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNFAToolkit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE9A635DE899975CC9908BA1B4CECFBB /* CacheUtils.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CacheUtils.swift; path = AutoModel/Classes/CacheUtils.swift; sourceTree = "<group>"; };
-		EF806473F8AEB9ED8AAFF8496F6B4857 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		EF806473F8AEB9ED8AAFF8496F6B4857 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F0E1B75DCCDD4757FF75936BADD81FE0 /* NFASQLiteDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NFASQLiteDB-prefix.pch"; sourceTree = "<group>"; };
 		F33716BCE07FE01C769E1BE7787D8E28 /* NFANetwork-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NFANetwork-umbrella.h"; sourceTree = "<group>"; };
 		F3F3AB141106B13082B38DF1779853C9 /* AutoData.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AutoData.release.xcconfig; sourceTree = "<group>"; };
 		FB0072BA6E8A5CFB73DF0F9E144D4A11 /* AutoModel-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AutoModel-prefix.pch"; sourceTree = "<group>"; };
-		FCDAB50E79A7C4871208432D4BC87382 /* libAutoData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libAutoData.a; path = libAutoData.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FCDAB50E79A7C4871208432D4BC87382 /* libAutoData.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libAutoData.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -343,7 +343,6 @@
 				2B179C91097A84E82E53F04F52E6FAEE /* MirrorUtils.swift */,
 				8562F839AF6DB64F3F6D869BC07BF634 /* Support Files */,
 			);
-			name = AutoModel;
 			path = AutoModel;
 			sourceTree = "<group>";
 		};
@@ -391,7 +390,6 @@
 				B2D15E5DB56FB7EAF559CE717B6EE6BB /* Window.swift */,
 				EE97EE8EF6974F123C794242607D7D42 /* Support Files */,
 			);
-			name = NFAToolkit;
 			path = NFAToolkit;
 			sourceTree = "<group>";
 		};
@@ -447,7 +445,6 @@
 				C1B1C5751CA730729973D58A0C1F5333 /* Resources */,
 				2B76C701A559BF9A2957B0432DD512CD /* Support Files */,
 			);
-			name = NFASQLiteDB;
 			path = NFASQLiteDB;
 			sourceTree = "<group>";
 		};
@@ -541,7 +538,6 @@
 				CA47E00DCAB4F753095A0CED075075C4 /* RequestUtil.swift */,
 				F0D7A0EC0D350CF68E5FA5ECBA29E85A /* Support Files */,
 			);
-			name = NFANetwork;
 			path = NFANetwork;
 			sourceTree = "<group>";
 		};
@@ -1503,8 +1499,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
