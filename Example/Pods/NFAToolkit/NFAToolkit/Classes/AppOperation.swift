@@ -33,5 +33,4 @@ open class AppOperation {
     {
       let _ = openURL("itms-apps://itunes.apple.com/cn/app/\(appId)?mt=8&action=write-review")
     }
-//    itms-apps://itunes.apple.com/cn/app/1473778999?mt=8&action=write-review
 }

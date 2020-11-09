@@ -406,6 +406,30 @@ open class Tools {
            fun(childView)
     }
 
+    open class func addTitleView(baseView : UIViewController, title : String?) -> UILabel{
+
+          let navigationH : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 88 : 64
+          let titleView = UILabel(frame: CGRect(x: 0 , y: 0 , width: UIScreen.main.bounds.size.width - 100, height: navigationH))
+           let centerView = UILabel()
+           baseView.navigationItem.titleView = titleView
+           DispatchQueue.main.async {
+               let width = UIScreen.main.bounds.size.width  - 100
+               
+               centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: navigationH - 44, width: width, height: 44)
+               if baseView.navigationItem.titleView != nil
+               {
+                   centerView.frame = baseView.view.window?.convert(centerView.frame, to: baseView.navigationItem.titleView) ?? CGRect.zero
+               }
+
+               centerView.text = title
+               centerView.textAlignment = .center
+               centerView.font = UIFont.boldSystemFont(ofSize: 17)
+               centerView.textColor = UIColor.black
+               baseView.navigationItem.titleView?.addSubview(centerView)
+           }
+
+           return centerView
+    }
 
     open  class func addTitleView(view : UIView, navigationItem : UINavigationItem, title : String?) {
 
@@ -424,28 +448,6 @@ open class Tools {
               navigationItem.titleView?.addSubview(centerView)
           }
     }
-    
-    open  class func addTitleView(baseView : UIViewController, title : String?) {
-
-           let navigationH : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 88 : 64
-           let titleView = UILabel(frame: CGRect(x: 0 , y: 0 , width: UIScreen.main.bounds.size.width - 100, height: navigationH))
-            baseView.navigationItem.titleView = titleView
-             DispatchQueue.main.async {
-                let width = UIScreen.main.bounds.size.width  - 100
-                let centerView = UILabel()
-                centerView.frame = CGRect(x: (UIScreen.main.bounds.size.width - width) / 2, y: navigationH - 44, width: width, height: 44)
-                if baseView.navigationItem.titleView != nil
-                {
-                    centerView.frame = (baseView.view.window?.convert(centerView.frame, to: baseView.navigationItem.titleView))!
-                }
-                
-                centerView.text = title
-                centerView.textAlignment = .center
-                centerView.font = UIFont.boldSystemFont(ofSize: 17)
-                centerView.textColor = UIColor.black
-                baseView.navigationItem.titleView?.addSubview(centerView)
-             }
-       }
 
     
     open class func pushView(_ baseView : UIViewController, storyboard : String, identifier : String, hideBottom : Bool = true, animator : Bool = true, removeSelf : Bool = false , isNoContains : Bool = true  , fun:(UIViewController) -> Void) {

@@ -200,40 +200,44 @@ open class DateUtil {
           return fmt.date(from: strDate)!
       }
       
-      /// 转换秒成时间格式
-      open class func transTimeIntervalToYYYYMMDD(_ curTimes : TimeInterval) -> String{
-          let h = Int(curTimes / 3600)
-          var t = ""
-          if h > 0 {
-              if h > 0 && h < 10 {
-                  t = "0\(h):"
-              } else {
-                  t = "\(h):"
-              }
-          }
-          let min = Int((Int(curTimes) - h * 3600) / 60)
-          if min > 0 {
-              if min < 10 {
-                  t += "0\(min):"
-              } else {
-                  t += "\(min):"
-              }
-          } else if t != "" {
-              t += "00:"
-          }
-          
-          let sec = Int(curTimes.truncatingRemainder(dividingBy: 60))
-          if sec > 0 {
-              if sec < 10 {
-                  t += "0\(sec)"
-              } else {
-                  t += "\(sec)"
-              }
-          } else if t != "" {
-              t += "00"
-          }
-          return t
-      }
+           /// 转换秒成时间格式
+      open class func transTimeIntervalToYYYYMMDD(_ curTimes : TimeInterval , showAll : Bool = false) -> String{
+            let h = Int(curTimes / 3600)
+            var t = ""
+            if h > 0 {
+                if h > 0 && h < 10 {
+                    t = "0\(h):"
+                } else {
+                    t = "\(h):"
+                }
+            }
+            else if showAll
+            {
+               t = "00:"
+            }
+            let min = Int((Int(curTimes) - h * 3600) / 60)
+            if min > 0 {
+                if min < 10 {
+                    t += "0\(min):"
+                } else {
+                    t += "\(min):"
+                }
+            } else if t != "" {
+                t += "00:"
+            }
+            
+            let sec = Int(curTimes.truncatingRemainder(dividingBy: 60))
+            if sec > 0 {
+                if sec < 10 {
+                    t += "0\(sec)"
+                } else {
+                    t += "\(sec)"
+                }
+            } else if t != "" {
+                t += "00"
+            }
+            return t
+        }
       
       /// 获取显示的时间：传入毫秒数
       open class func getShowTimeWithMillisecond(_ toTime : Double) -> String{

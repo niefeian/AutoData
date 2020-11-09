@@ -105,11 +105,11 @@ public func getModel <T> (map : AnyObject?) -> T?{
 
 public let AppWidth: CGFloat = UIScreen.main.bounds.size.width
 public let AppHeight: CGFloat = UIScreen.main.bounds.size.height
-public let isIphoneX =  UIApplication.shared.statusBarFrame.height == 44
+public var isIphoneX =  UIApplication.shared.statusBarFrame.height == 44
 public let MainBounds: CGRect = UIScreen.main.bounds
 public let StatusBarH : CGFloat = UIApplication.shared.statusBarFrame.height
-public let ScreenHeightTabBar : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 83 : 49
-public let NavigationH  : CGFloat = StatusBarH == 44 ? 88: 64
+public var ScreenHeightTabBar : CGFloat = UIApplication.shared.statusBarFrame.height == 44 ? 83 : 49
+public var NavigationH  : CGFloat = StatusBarH == 44 ? 88: 64
 
 
 public func pd6sW(_ pd : CGFloat) -> CGFloat{
@@ -171,7 +171,81 @@ public extension UIColor {
 
 import CommonCrypto
 public extension String {
-    // 从0开始截取到to的位置。如果to的位置超过文本的长度，返回原始文本。注意需要截取到的位置是原始位置+1，如20160101要截取年度，substringToIndex(5).注意参数是5，不是4
+    
+    var localized: String {
+        return NSLocalizedString(self, comment: self)
+    }
+    
+    var decodeBase64 : String{
+        return String(data: Data(base64Encoded: self, options: Data.Base64DecodingOptions.ignoreUnknownCharacters) ?? Data(), encoding: .utf8) ?? ""
+    }
+    
+    var base64EncodedString : String {
+        let utf8EncodeData = self.data(using: String.Encoding.utf8, allowLossyConversion: true)
+        // 将NSData进行Base64编码
+        return utf8EncodeData?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: UInt(0))) ?? ""
+    }
+       
+    var urlEncoded : String{
+        return CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, self as NSString, nil,
+                                                       "!*'();:@&=+$,/?%#[]" as CFString?, CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue)) as String
+    }
+    
+    var urlDecoded : String {
+       let res:NSString = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, self as NSString, "" as CFString?, CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue))
+       return res as String
+   }
+    
+    var map : [String:Any]?{
+        if let data = self.data(using:String.Encoding.utf8){
+            if let dic = try? JSONSerialization.jsonObject(with: data,options: JSONSerialization.ReadingOptions.mutableContainers)as? [String: Any] {
+                return dic
+            }
+        }
+       return nil
+    }
+    
+    
+    func stringToDic() -> [String:Any]? {
+        return self.map
+    }
+    
+    var array : Array<Any>?{
+        if let data = self.data(using:String.Encoding.utf8){
+        if let array = try? JSONSerialization.jsonObject(with: data,options: JSONSerialization.ReadingOptions.mutableContainers)as? Array<Any> {
+               return array
+           }
+        }
+        return nil
+    }
+    
+    var html : NSAttributedString?{
+        do{
+        return try NSAttributedString(data: self.data(using: String.Encoding.unicode, allowLossyConversion: true)!, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
+        }catch _ {
+
+        }
+       return nil
+    }
+    
+    var md5 : String{
+        let str = self.cString(using: String.Encoding.utf8)
+        let strLen = CC_LONG(self.lengthOfBytes(using: String.Encoding.utf8))
+        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
+        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen);
+
+        CC_MD5(str!, strLen, result);
+
+        let hash = NSMutableString();
+        for i in 0 ..< digestLen {
+           hash.appendFormat("%02x", result[i]);
+        }
+        result.deinitialize(count: 0);
+
+        return String(format: hash as String).lowercased()
+    }
+  
+    
     func substringToIndex(_ to : Int) -> String {
         
         var temp : NSString = self as NSString
@@ -207,37 +281,15 @@ public extension String {
     }
     
     func positionOf(sub:String)->Int {
-           var pos = -1
-           if let range = range(of:sub) {
-               if !range.isEmpty {
-                   pos = distance(from:startIndex, to:range.lowerBound)
-               }
+       var pos = -1
+       if let range = range(of:sub) {
+           if !range.isEmpty {
+               pos = distance(from:startIndex, to:range.lowerBound)
            }
-           return pos
-    }
-     
-   func urlEncoded()->String {
-       let res:NSString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault, self as NSString, nil,
-           "!*'();:@&=+$,/?%#[]" as CFString?, CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue))
-       return res as String
-   }
-    
-    func decodeBase64()->String {
-        return String(data: Data(base64Encoded: self, options: Data.Base64DecodingOptions.ignoreUnknownCharacters) ?? Data(), encoding: .utf8) ?? ""
+       }
+       return pos
     }
     
-    func base64EncodedString()->String {
-        let utf8EncodeData = self.data(using: String.Encoding.utf8, allowLossyConversion: true)
-        // 将NSData进行Base64编码
-        return utf8EncodeData?.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: UInt(0))) ?? ""
-    }
-       
-   func urlDecoded()->String {
-       let res:NSString = CFURLCreateStringByReplacingPercentEscapesUsingEncoding(kCFAllocatorDefault, self as NSString, "" as CFString?, CFStringConvertNSStringEncodingToEncoding(String.Encoding.utf8.rawValue))
-       return res as String
-   }
-   
-   
    /**
     将当前字符串拼接到cache目录后面
     */
@@ -262,52 +314,7 @@ public extension String {
        return path.appendingPathComponent((self as NSString).lastPathComponent)
    }
     
-    func stringToDic() -> [String: Any]?{
-        if let data = self.data(using:String.Encoding.utf8){
-            if let dict = try? JSONSerialization.jsonObject(with: data,options: JSONSerialization.ReadingOptions.mutableContainers)as? [String: Any] {
-                return dict
-            }
-        }
-       return nil
-   }
-    
-    func stringToArray() -> Array<Any>?{
-        if let data = self.data(using:String.Encoding.utf8){
-        if let array = try? JSONSerialization.jsonObject(with: data,options: JSONSerialization.ReadingOptions.mutableContainers)as? Array<Any> {
-               return array
-           }
-        }
-        return nil
-    }
-    
-    func htmlString() -> NSAttributedString?
-    {
-        do{
-        return try NSAttributedString(data: self.data(using: String.Encoding.unicode, allowLossyConversion: true)!, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-        }catch _ {
 
-        }
-       return nil
-    }
-    
-    
-    var md5 : String{
-        let str = self.cString(using: String.Encoding.utf8)
-        let strLen = CC_LONG(self.lengthOfBytes(using: String.Encoding.utf8))
-        let digestLen = Int(CC_MD5_DIGEST_LENGTH)
-        let result = UnsafeMutablePointer<CUnsignedChar>.allocate(capacity: digestLen);
-
-        CC_MD5(str!, strLen, result);
-
-        let hash = NSMutableString();
-        for i in 0 ..< digestLen {
-           hash.appendFormat("%02x", result[i]);
-        }
-        result.deinitialize(count: 0);
-
-        return String(format: hash as String).lowercased()
-    }
-  
    
    //获取拼音首字母（大写字母）
    func findFirstLetterFromString(aString: String) -> String {
@@ -449,8 +456,6 @@ public extension UITableView {
     {
            //获取当前cell在tableview中的位置
         let rectintableview = rectForRow(at: indexPath)
-        //获取当前cell在屏幕中的位置
-//        let rectinsuperview =  self.convert(rectintableview, to: self.superview)
         let contentoffset = CGPoint(x: contentOffset.x, y: contentOffset.y)
         setContentOffset(CGPoint(x: contentoffset.x, y: rectintableview.origin.y + offsetY), animated: true)
         
@@ -677,3 +682,61 @@ extension NSObject {
         }
     }
 }
+
+// 修复图片旋转
+extension UIImage {
+    //系统拍完照 会默认旋转90 这里做还原操作
+    func fixOrientation() -> UIImage {
+        if self.imageOrientation == .up {
+            return self
+        }
+        var transform = CGAffineTransform.identity
+        switch self.imageOrientation {
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: self.size.height)
+            transform = transform.rotated(by: .pi)
+            break
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.rotated(by: .pi / 2)
+            break
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: self.size.height)
+            transform = transform.rotated(by: -.pi / 2)
+            break
+        default:
+            break
+        }
+        switch self.imageOrientation {
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+            break
+        case .leftMirrored, .rightMirrored:
+            transform = transform.translatedBy(x: self.size.height, y: 0);
+            transform = transform.scaledBy(x: -1, y: 1)
+            break
+        default:
+            break
+        }
+        let ctx = CGContext(data: nil, width: Int(self.size.width), height: Int(self.size.height), bitsPerComponent: self.cgImage!.bitsPerComponent, bytesPerRow: 0, space: self.cgImage!.colorSpace!, bitmapInfo: self.cgImage!.bitmapInfo.rawValue)
+        ctx?.concatenate(transform)
+        switch self.imageOrientation {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            ctx?.draw(self.cgImage!, in: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(size.height), height: CGFloat(size.width)))
+            break
+        default:
+            ctx?.draw(self.cgImage!, in: CGRect(x: CGFloat(0), y: CGFloat(0), width: CGFloat(size.width), height: CGFloat(size.height)))
+            break
+        }
+        let cgimg: CGImage = (ctx?.makeImage())!
+        let img = UIImage(cgImage: cgimg)
+        return img
+    }
+    
+    func fixOrientationX()  -> UIImage  {
+        let flipImage = UIImage(cgImage: self.cgImage!, scale: 1.0, orientation: .leftMirrored)
+        return flipImage
+    }
+}
+
